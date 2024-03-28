@@ -5,8 +5,8 @@ ATHR is an innovative well-being and entertainment application dedicated to insp
 This repository contains the source code for our project. You can find the code in the "fluttersflow" branch. 
 
 # Manual 
- we added a Manual which inclueds some information about our project.
- 
+ we added a Manual which includes some information about our project.
+
 # Group mon8-4 
 Jory Alharbi	443200984
 Arwa Mesloub	443203895
