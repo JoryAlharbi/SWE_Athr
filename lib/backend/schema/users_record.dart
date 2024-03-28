@@ -51,6 +51,11 @@ class UsersRecord extends FirestoreRecord {
   String get profilePhoto => _profilePhoto ?? '';
   bool hasProfilePhoto() => _profilePhoto != null;
 
+  // "username" field.
+  String? _username;
+  String get username => _username ?? '';
+  bool hasUsername() => _username != null;
+
   void _initializeFields() {
     _userID = castToType<int>(snapshotData['userID']);
     _phoneNum = castToType<int>(snapshotData['PhoneNum']);
@@ -59,6 +64,7 @@ class UsersRecord extends FirestoreRecord {
     _password = snapshotData['password'] as String?;
     _email = snapshotData['email'] as String?;
     _profilePhoto = snapshotData['Profile_Photo'] as String?;
+    _username = snapshotData['username'] as String?;
   }
 
   static CollectionReference get collection =>
@@ -102,6 +108,7 @@ Map<String, dynamic> createUsersRecordData({
   String? password,
   String? email,
   String? profilePhoto,
+  String? username,
 }) {
   final firestoreData = mapToFirestore(
     <String, dynamic>{
@@ -112,6 +119,7 @@ Map<String, dynamic> createUsersRecordData({
       'password': password,
       'email': email,
       'Profile_Photo': profilePhoto,
+      'username': username,
     }.withoutNulls,
   );
 
@@ -129,7 +137,8 @@ class UsersRecordDocumentEquality implements Equality<UsersRecord> {
         e1?.location == e2?.location &&
         e1?.password == e2?.password &&
         e1?.email == e2?.email &&
-        e1?.profilePhoto == e2?.profilePhoto;
+        e1?.profilePhoto == e2?.profilePhoto &&
+        e1?.username == e2?.username;
   }
 
   @override
@@ -140,7 +149,8 @@ class UsersRecordDocumentEquality implements Equality<UsersRecord> {
         e?.location,
         e?.password,
         e?.email,
-        e?.profilePhoto
+        e?.profilePhoto,
+        e?.username
       ]);
 
   @override
