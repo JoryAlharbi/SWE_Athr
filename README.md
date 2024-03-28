@@ -1,3 +1,2 @@
-# SWE_Athr
-For busy individuals Who are caught up in the fast pace of modern life seeking opportunities for personal growth, connecting with others while finding themselves new experiences. 
-ATHR application Is a Wellbeing and Entertainment android mobile application That simplifies the discovery and booking of diverse local workshops and events while building a positive community around it.
+ATHR
+ATHR is an innovative well-being and entertainment application dedicated to inspiring individuals to explore and engage in new hobbies and workshops. With a core emphasis on community building, ATHR serves as a vibrant platform where users can not only discover a diverse range of activities but also share their interests and experiences with others. Whether it's diving into a new hobby or participating in enriching workshops, ATHR provides a supportive environment for individuals to connect, learn, and grow together.
