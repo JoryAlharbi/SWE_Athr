@@ -12,3 +12,4 @@ export '/pages/deleteor_edit_reservation/deleteor_edit_reservation_widget.dart'
     show DeleteorEditReservationWidget;
 export '/pages/community_hub_post/community_hub_post_widget.dart'
     show CommunityHubPostWidget;
+export '/pages/searchpage/searchpage_widget.dart' show SearchpageWidget;

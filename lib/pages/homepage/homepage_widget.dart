@@ -1,3 +1,4 @@
+import '/auth/firebase_auth/auth_util.dart';
 import '/flutter_flow/flutter_flow_icon_button.dart';
 import '/flutter_flow/flutter_flow_theme.dart';
 import '/flutter_flow/flutter_flow_util.dart';
@@ -7,7 +8,12 @@ import 'homepage_model.dart';
 export 'homepage_model.dart';
 
 class HomepageWidget extends StatefulWidget {
-  const HomepageWidget({super.key});
+  const HomepageWidget({
+    super.key,
+    this.workshopRef,
+  });
+
+  final DocumentReference? workshopRef;
 
   @override
   State<HomepageWidget> createState() => _HomepageWidgetState();
@@ -22,9 +28,6 @@ class _HomepageWidgetState extends State<HomepageWidget> {
   void initState() {
     super.initState();
     _model = createModel(context, () => HomepageModel());
-
-    _model.textController ??= TextEditingController();
-    _model.textFieldFocusNode ??= FocusNode();
   }
 
   @override
@@ -60,7 +63,7 @@ class _HomepageWidgetState extends State<HomepageWidget> {
                       children: [
                         Expanded(
                           child: Text(
-                            'Welcome, Abdulrhman',
+                            'Welcome,',
                             style: FlutterFlowTheme.of(context)
                                 .headlineMedium
                                 .override(
@@ -69,6 +72,21 @@ class _HomepageWidgetState extends State<HomepageWidget> {
                                   fontSize: 23.0,
                                   letterSpacing: 0.0,
                                 ),
+                          ),
+                        ),
+                        Expanded(
+                          child: AuthUserStreamWidget(
+                            builder: (context) => Text(
+                              currentUserDisplayName,
+                              style: FlutterFlowTheme.of(context)
+                                  .headlineMedium
+                                  .override(
+                                    fontFamily: 'Outfit',
+                                    color: const Color(0xFF183A43),
+                                    fontSize: 20.0,
+                                    letterSpacing: 0.0,
+                                  ),
+                            ),
                           ),
                         ),
                         Padding(
@@ -137,76 +155,58 @@ class _HomepageWidgetState extends State<HomepageWidget> {
                             child: Padding(
                               padding: const EdgeInsetsDirectional.fromSTEB(
                                   12.0, 0.0, 8.0, 0.0),
-                              child: Row(
-                                mainAxisSize: MainAxisSize.max,
-                                children: [
-                                  Icon(
-                                    Icons.search_rounded,
-                                    color: FlutterFlowTheme.of(context)
-                                        .secondaryText,
-                                    size: 24.0,
-                                  ),
-                                  Expanded(
-                                    child: Padding(
-                                      padding: const EdgeInsetsDirectional.fromSTEB(
-                                          4.0, 0.0, 0.0, 0.0),
-                                      child: SizedBox(
-                                        width: 200.0,
-                                        child: TextFormField(
-                                          controller: _model.textController,
-                                          focusNode: _model.textFieldFocusNode,
-                                          autofocus: false,
-                                          obscureText: false,
-                                          decoration: InputDecoration(
-                                            labelText: 'Search listings...',
-                                            labelStyle:
-                                                FlutterFlowTheme.of(context)
-                                                    .labelMedium
-                                                    .override(
-                                                      fontFamily: 'Readex Pro',
-                                                      letterSpacing: 0.0,
-                                                    ),
-                                            hintStyle:
-                                                FlutterFlowTheme.of(context)
-                                                    .labelMedium
-                                                    .override(
-                                                      fontFamily: 'Readex Pro',
-                                                      letterSpacing: 0.0,
-                                                    ),
-                                            enabledBorder: InputBorder.none,
-                                            focusedBorder: InputBorder.none,
-                                            errorBorder: InputBorder.none,
-                                            focusedErrorBorder:
-                                                InputBorder.none,
-                                            filled: true,
-                                            fillColor:
-                                                FlutterFlowTheme.of(context)
-                                                    .secondaryBackground,
+                              child: InkWell(
+                                splashColor: Colors.transparent,
+                                focusColor: Colors.transparent,
+                                hoverColor: Colors.transparent,
+                                highlightColor: Colors.transparent,
+                                onTap: () async {
+                                  context.pushNamed('searchpage');
+                                },
+                                child: Row(
+                                  mainAxisSize: MainAxisSize.max,
+                                  children: [
+                                    InkWell(
+                                      splashColor: Colors.transparent,
+                                      focusColor: Colors.transparent,
+                                      hoverColor: Colors.transparent,
+                                      highlightColor: Colors.transparent,
+                                      onTap: () async {
+                                        context.pushNamed('searchpage');
+                                      },
+                                      child: Icon(
+                                        Icons.search_rounded,
+                                        color: FlutterFlowTheme.of(context)
+                                            .secondaryText,
+                                        size: 24.0,
+                                      ),
+                                    ),
+                                    Expanded(
+                                      child: Padding(
+                                        padding: const EdgeInsetsDirectional.fromSTEB(
+                                            4.0, 0.0, 0.0, 0.0),
+                                        child: InkWell(
+                                          splashColor: Colors.transparent,
+                                          focusColor: Colors.transparent,
+                                          hoverColor: Colors.transparent,
+                                          highlightColor: Colors.transparent,
+                                          onTap: () async {
+                                            context.pushNamed('searchpage');
+                                          },
+                                          child: Text(
+                                            'Search listings...',
+                                            style: FlutterFlowTheme.of(context)
+                                                .labelMedium
+                                                .override(
+                                                  fontFamily: 'Readex Pro',
+                                                  letterSpacing: 0.0,
+                                                ),
                                           ),
-                                          style: FlutterFlowTheme.of(context)
-                                              .bodyMedium
-                                              .override(
-                                                fontFamily: 'Readex Pro',
-                                                letterSpacing: 0.0,
-                                              ),
-                                          minLines: null,
-                                          cursorColor:
-                                              FlutterFlowTheme.of(context)
-                                                  .primary,
-                                          validator: _model
-                                              .textControllerValidator
-                                              .asValidator(context),
                                         ),
                                       ),
                                     ),
-                                  ),
-                                  Icon(
-                                    Icons.sort_sharp,
-                                    color: FlutterFlowTheme.of(context)
-                                        .secondaryText,
-                                    size: 24.0,
-                                  ),
-                                ],
+                                  ],
+                                ),
                               ),
                             ),
                           ),
@@ -244,100 +244,128 @@ class _HomepageWidgetState extends State<HomepageWidget> {
                                 Padding(
                                   padding: const EdgeInsetsDirectional.fromSTEB(
                                       0.0, 12.0, 0.0, 12.0),
-                                  child: Container(
-                                    width: 220.0,
-                                    height: 100.0,
-                                    decoration: BoxDecoration(
-                                      color: FlutterFlowTheme.of(context)
-                                          .secondaryBackground,
-                                      borderRadius: BorderRadius.circular(12.0),
-                                      border: Border.all(
-                                        color: FlutterFlowTheme.of(context)
-                                            .alternate,
-                                        width: 2.0,
-                                      ),
-                                    ),
-                                    child: Padding(
-                                      padding: const EdgeInsets.all(8.0),
-                                      child: Column(
-                                        mainAxisSize: MainAxisSize.max,
-                                        crossAxisAlignment:
-                                            CrossAxisAlignment.start,
-                                        children: [
-                                          Expanded(
-                                            child: Stack(
-                                              children: [
-                                                ClipRRect(
-                                                  borderRadius:
-                                                      BorderRadius.circular(
-                                                          8.0),
-                                                  child: Image.network(
-                                                    'https://images.unsplash.com/photo-1607556671927-78a6605e290b?crop=entropy&cs=srgb&fm=jpg&ixid=M3w0NTYyMDF8MHwxfHNlYXJjaHw4fHxwb3R0ZXJ5fGVufDB8fHx8MTcxMTQ4MDAzNnww&ixlib=rb-4.0.3&q=85',
-                                                    width: double.infinity,
-                                                    height: double.infinity,
-                                                    fit: BoxFit.cover,
-                                                  ),
-                                                ),
-                                              ],
-                                            ),
+                                  child: InkWell(
+                                    splashColor: Colors.transparent,
+                                    focusColor: Colors.transparent,
+                                    hoverColor: Colors.transparent,
+                                    highlightColor: Colors.transparent,
+                                    onTap: () async {
+                                      context.pushNamed(
+                                        'Reservation',
+                                        queryParameters: {
+                                          'wsRef': serializeParam(
+                                            widget.workshopRef,
+                                            ParamType.DocumentReference,
                                           ),
-                                          Padding(
-                                            padding:
-                                                const EdgeInsetsDirectional.fromSTEB(
-                                                    0.0, 8.0, 0.0, 0.0),
-                                            child: Text(
-                                              'pottery workshop',
-                                              style:
-                                                  FlutterFlowTheme.of(context)
+                                        }.withoutNulls,
+                                      );
+                                    },
+                                    child: Container(
+                                      width: 220.0,
+                                      height: 100.0,
+                                      decoration: BoxDecoration(
+                                        color: FlutterFlowTheme.of(context)
+                                            .secondaryBackground,
+                                        borderRadius:
+                                            BorderRadius.circular(12.0),
+                                        border: Border.all(
+                                          color: FlutterFlowTheme.of(context)
+                                              .alternate,
+                                          width: 2.0,
+                                        ),
+                                      ),
+                                      child: Padding(
+                                        padding: const EdgeInsets.all(8.0),
+                                        child: Column(
+                                          mainAxisSize: MainAxisSize.max,
+                                          crossAxisAlignment:
+                                              CrossAxisAlignment.start,
+                                          children: [
+                                            Expanded(
+                                              child: Stack(
+                                                children: [
+                                                  ClipRRect(
+                                                    borderRadius:
+                                                        BorderRadius.circular(
+                                                            8.0),
+                                                    child: Image.network(
+                                                      'https://images.unsplash.com/photo-1607556671927-78a6605e290b?crop=entropy&cs=srgb&fm=jpg&ixid=M3w0NTYyMDF8MHwxfHNlYXJjaHw4fHxwb3R0ZXJ5fGVufDB8fHx8MTcxMTQ4MDAzNnww&ixlib=rb-4.0.3&q=85',
+                                                      width: double.infinity,
+                                                      height: double.infinity,
+                                                      fit: BoxFit.cover,
+                                                    ),
+                                                  ),
+                                                ],
+                                              ),
+                                            ),
+                                            Padding(
+                                              padding: const EdgeInsetsDirectional
+                                                  .fromSTEB(0.0, 8.0, 0.0, 0.0),
+                                              child: InkWell(
+                                                splashColor: Colors.transparent,
+                                                focusColor: Colors.transparent,
+                                                hoverColor: Colors.transparent,
+                                                highlightColor:
+                                                    Colors.transparent,
+                                                onTap: () async {
+                                                  context
+                                                      .pushNamed('Reservation');
+                                                },
+                                                child: Text(
+                                                  'pottery workshop',
+                                                  style: FlutterFlowTheme.of(
+                                                          context)
                                                       .titleLarge
                                                       .override(
                                                         fontFamily: 'Outfit',
                                                         letterSpacing: 0.0,
                                                       ),
-                                            ),
-                                          ),
-                                          Padding(
-                                            padding:
-                                                const EdgeInsetsDirectional.fromSTEB(
-                                                    0.0, 4.0, 0.0, 8.0),
-                                            child: RichText(
-                                              textScaler: MediaQuery.of(context)
-                                                  .textScaler,
-                                              text: TextSpan(
-                                                children: [
-                                                  TextSpan(
-                                                    text: '\$85',
-                                                    style: TextStyle(
-                                                      color:
-                                                          FlutterFlowTheme.of(
-                                                                  context)
-                                                              .primary,
-                                                    ),
-                                                  ),
-                                                  TextSpan(
-                                                    text: '/ session',
-                                                    style: FlutterFlowTheme.of(
-                                                            context)
-                                                        .labelSmall
-                                                        .override(
-                                                          fontFamily:
-                                                              'Readex Pro',
-                                                          letterSpacing: 0.0,
-                                                        ),
-                                                  )
-                                                ],
-                                                style:
-                                                    FlutterFlowTheme.of(context)
-                                                        .labelMedium
-                                                        .override(
-                                                          fontFamily:
-                                                              'Readex Pro',
-                                                          letterSpacing: 0.0,
-                                                        ),
+                                                ),
                                               ),
                                             ),
-                                          ),
-                                        ],
+                                            Padding(
+                                              padding: const EdgeInsetsDirectional
+                                                  .fromSTEB(0.0, 4.0, 0.0, 8.0),
+                                              child: RichText(
+                                                textScaler:
+                                                    MediaQuery.of(context)
+                                                        .textScaler,
+                                                text: TextSpan(
+                                                  children: [
+                                                    TextSpan(
+                                                      text: '\$85',
+                                                      style: TextStyle(
+                                                        color:
+                                                            FlutterFlowTheme.of(
+                                                                    context)
+                                                                .primary,
+                                                      ),
+                                                    ),
+                                                    TextSpan(
+                                                      text: '/ session',
+                                                      style: FlutterFlowTheme
+                                                              .of(context)
+                                                          .labelSmall
+                                                          .override(
+                                                            fontFamily:
+                                                                'Readex Pro',
+                                                            letterSpacing: 0.0,
+                                                          ),
+                                                    )
+                                                  ],
+                                                  style: FlutterFlowTheme.of(
+                                                          context)
+                                                      .labelMedium
+                                                      .override(
+                                                        fontFamily:
+                                                            'Readex Pro',
+                                                        letterSpacing: 0.0,
+                                                      ),
+                                                ),
+                                              ),
+                                            ),
+                                          ],
+                                        ),
                                       ),
                                     ),
                                   ),

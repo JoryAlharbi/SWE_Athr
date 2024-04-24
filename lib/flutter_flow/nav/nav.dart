@@ -86,9 +86,20 @@ GoRouter createRouter(AppStateNotifier appStateNotifier) => GoRouter(
           path: '/userAccountView',
           builder: (context, params) => params.isEmpty
               ? const NavBarPage(initialPage: 'UserAccountView')
-              : const NavBarPage(
+              : NavBarPage(
                   initialPage: 'UserAccountView',
-                  page: UserAccountViewWidget(),
+                  page: UserAccountViewWidget(
+                    firstName: params.getParam(
+                      'firstName',
+                      ParamType.String,
+                    ),
+                    workshopID: params.getParam(
+                      'workshopID',
+                      ParamType.DocumentReference,
+                      false,
+                      ['Workshops'],
+                    ),
+                  ),
                 ),
         ),
         FFRoute(
@@ -96,10 +107,7 @@ GoRouter createRouter(AppStateNotifier appStateNotifier) => GoRouter(
           path: '/communityHub',
           builder: (context, params) => params.isEmpty
               ? const NavBarPage(initialPage: 'CommunityHub')
-              : const NavBarPage(
-                  initialPage: 'CommunityHub',
-                  page: CommunityHubWidget(),
-                ),
+              : const CommunityHubWidget(),
         ),
         FFRoute(
           name: 'Calendar',
@@ -121,9 +129,16 @@ GoRouter createRouter(AppStateNotifier appStateNotifier) => GoRouter(
           path: '/homepage',
           builder: (context, params) => params.isEmpty
               ? const NavBarPage(initialPage: 'Homepage')
-              : const NavBarPage(
+              : NavBarPage(
                   initialPage: 'Homepage',
-                  page: HomepageWidget(),
+                  page: HomepageWidget(
+                    workshopRef: params.getParam(
+                      'workshopRef',
+                      ParamType.DocumentReference,
+                      false,
+                      ['Workshops'],
+                    ),
+                  ),
                 ),
         ),
         FFRoute(
@@ -139,17 +154,36 @@ GoRouter createRouter(AppStateNotifier appStateNotifier) => GoRouter(
         FFRoute(
           name: 'Reservation',
           path: '/reservation',
-          builder: (context, params) => const ReservationWidget(),
+          builder: (context, params) => ReservationWidget(
+            wsRef: params.getParam(
+              'wsRef',
+              ParamType.DocumentReference,
+              false,
+              ['Workshops'],
+            ),
+          ),
         ),
         FFRoute(
           name: 'DeleteorEditReservation',
           path: '/deleteorEditReservation',
-          builder: (context, params) => const DeleteorEditReservationWidget(),
+          builder: (context, params) => DeleteorEditReservationWidget(
+            reservationRef: params.getParam(
+              'reservationRef',
+              ParamType.DocumentReference,
+              false,
+              ['Reservations'],
+            ),
+          ),
         ),
         FFRoute(
           name: 'CommunityHubPost',
           path: '/communityHubPost',
           builder: (context, params) => const CommunityHubPostWidget(),
+        ),
+        FFRoute(
+          name: 'searchpage',
+          path: '/searchpage',
+          builder: (context, params) => const SearchpageWidget(),
         )
       ].map((r) => r.toRoute(appStateNotifier)).toList(),
     );
@@ -226,7 +260,7 @@ extension _GoRouterStateExtensions on GoRouterState {
       extra != null ? extra as Map<String, dynamic> : {};
   Map<String, dynamic> get allParams => <String, dynamic>{}
     ..addAll(pathParameters)
-    ..addAll(queryParameters)
+    ..addAll(uri.queryParameters)
     ..addAll(extraMap);
   TransitionInfo get transitionInfo => extraMap.containsKey(kTransitionInfoKey)
       ? extraMap[kTransitionInfoKey] as TransitionInfo
@@ -319,7 +353,7 @@ class FFRoute {
           }
 
           if (requireAuth && !appStateNotifier.loggedIn) {
-            appStateNotifier.setRedirectLocationIfUnset(state.location);
+            appStateNotifier.setRedirectLocationIfUnset(state.uri.toString());
             return '/start';
           }
           return null;
@@ -398,7 +432,7 @@ class RootPageContext {
   static bool isInactiveRootPage(BuildContext context) {
     final rootPageContext = context.read<RootPageContext?>();
     final isRootPage = rootPageContext?.isRootPage ?? false;
-    final location = GoRouter.of(context).location;
+    final location = GoRouterState.of(context).uri.toString();
     return isRootPage &&
         location != '/' &&
         location != rootPageContext?.errorRoute;

@@ -18,9 +18,6 @@ class UserAccountViewModel extends FlutterFlowModel<UserAccountViewWidget> {
   int get tabBarCurrentIndex =>
       tabBarController != null ? tabBarController!.index : 0;
 
-  // State field(s) for RatingBar widget.
-  double? ratingBarValue;
-
   @override
   void initState(BuildContext context) {}
 

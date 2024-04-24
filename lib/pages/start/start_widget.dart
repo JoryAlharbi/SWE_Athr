@@ -111,8 +111,8 @@ class _StartWidgetState extends State<StartWidget> {
                     child: Align(
                       alignment: const AlignmentDirectional(0.0, -0.3),
                       child: FFButtonWidget(
-                        onPressed: () {
-                          print('Button pressed ...');
+                        onPressed: () async {
+                          context.pushNamed('Signup');
                         },
                         text: 'Get Started',
                         options: FFButtonOptions(

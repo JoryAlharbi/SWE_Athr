@@ -1,3 +1,6 @@
+import '/auth/firebase_auth/auth_util.dart';
+import '/backend/backend.dart';
+import '/components/options_menu_widget.dart';
 import '/flutter_flow/flutter_flow_button_tabbar.dart';
 import '/flutter_flow/flutter_flow_theme.dart';
 import '/flutter_flow/flutter_flow_util.dart';
@@ -5,13 +8,19 @@ import '/flutter_flow/flutter_flow_widgets.dart';
 import 'package:smooth_page_indicator/smooth_page_indicator.dart'
     as smooth_page_indicator;
 import 'package:flutter/material.dart';
-import 'package:flutter_rating_bar/flutter_rating_bar.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'user_account_view_model.dart';
 export 'user_account_view_model.dart';
 
 class UserAccountViewWidget extends StatefulWidget {
-  const UserAccountViewWidget({super.key});
+  const UserAccountViewWidget({
+    super.key,
+    String? firstName,
+    this.workshopID,
+  }) : firstName = firstName ?? 'name';
+
+  final String firstName;
+  final DocumentReference? workshopID;
 
   @override
   State<UserAccountViewWidget> createState() => _UserAccountViewWidgetState();
@@ -89,26 +98,6 @@ class _UserAccountViewWidgetState extends State<UserAccountViewWidget>
                                 fontWeight: FontWeight.w600,
                               ),
                         ),
-                        InkWell(
-                          splashColor: Colors.transparent,
-                          focusColor: Colors.transparent,
-                          hoverColor: Colors.transparent,
-                          highlightColor: Colors.transparent,
-                          onTap: () async {
-                            scaffoldKey.currentState!.openDrawer();
-                          },
-                          child: Container(
-                            width: 40.0,
-                            height: 40.0,
-                            clipBehavior: Clip.antiAlias,
-                            decoration: const BoxDecoration(
-                              shape: BoxShape.circle,
-                            ),
-                            child: Image.asset(
-                              'assets/images/userAvatar.png',
-                            ),
-                          ),
-                        ),
                       ],
                     ),
                   ),
@@ -122,17 +111,19 @@ class _UserAccountViewWidgetState extends State<UserAccountViewWidget>
                         Padding(
                           padding: const EdgeInsetsDirectional.fromSTEB(
                               2.0, 0.0, 0.0, 0.0),
-                          child: Text(
-                            'Abdulrhman',
-                            style: FlutterFlowTheme.of(context)
-                                .displaySmall
-                                .override(
-                                  fontFamily: 'Outfit',
-                                  color: const Color(0xFF183A43),
-                                  fontSize: 32.0,
-                                  letterSpacing: 0.0,
-                                  fontWeight: FontWeight.w600,
-                                ),
+                          child: AuthUserStreamWidget(
+                            builder: (context) => Text(
+                              currentUserDisplayName,
+                              style: FlutterFlowTheme.of(context)
+                                  .displaySmall
+                                  .override(
+                                    fontFamily: 'Outfit',
+                                    color: const Color(0xFF183A43),
+                                    fontSize: 32.0,
+                                    letterSpacing: 0.0,
+                                    fontWeight: FontWeight.w600,
+                                  ),
+                            ),
                           ),
                         ),
                       ],
@@ -507,21 +498,26 @@ class _UserAccountViewWidgetState extends State<UserAccountViewWidget>
                                             padding:
                                                 const EdgeInsetsDirectional.fromSTEB(
                                                     0.0, 4.0, 0.0, 5.0),
-                                            child: Text(
-                                              'Claude11',
-                                              style:
-                                                  FlutterFlowTheme.of(context)
-                                                      .labelMedium
-                                                      .override(
-                                                        fontFamily:
-                                                            'Plus Jakarta Sans',
-                                                        color:
-                                                            const Color(0xFF448C94),
-                                                        fontSize: 14.0,
-                                                        letterSpacing: 0.0,
-                                                        fontWeight:
-                                                            FontWeight.normal,
-                                                      ),
+                                            child: AuthUserStreamWidget(
+                                              builder: (context) => Text(
+                                                valueOrDefault(
+                                                    currentUserDocument
+                                                        ?.username,
+                                                    ''),
+                                                style:
+                                                    FlutterFlowTheme.of(context)
+                                                        .labelMedium
+                                                        .override(
+                                                          fontFamily:
+                                                              'Plus Jakarta Sans',
+                                                          color:
+                                                              const Color(0xFF448C94),
+                                                          fontSize: 14.0,
+                                                          letterSpacing: 0.0,
+                                                          fontWeight:
+                                                              FontWeight.normal,
+                                                        ),
+                                              ),
                                             ),
                                           ),
                                           Text(
@@ -537,21 +533,23 @@ class _UserAccountViewWidgetState extends State<UserAccountViewWidget>
                                             padding:
                                                 const EdgeInsetsDirectional.fromSTEB(
                                                     0.0, 4.0, 0.0, 5.0),
-                                            child: Text(
-                                              '+966 55 486 8598',
-                                              style:
-                                                  FlutterFlowTheme.of(context)
-                                                      .labelMedium
-                                                      .override(
-                                                        fontFamily:
-                                                            'Plus Jakarta Sans',
-                                                        color:
-                                                            const Color(0xFF448C94),
-                                                        fontSize: 14.0,
-                                                        letterSpacing: 0.0,
-                                                        fontWeight:
-                                                            FontWeight.normal,
-                                                      ),
+                                            child: AuthUserStreamWidget(
+                                              builder: (context) => Text(
+                                                currentPhoneNumber,
+                                                style:
+                                                    FlutterFlowTheme.of(context)
+                                                        .labelMedium
+                                                        .override(
+                                                          fontFamily:
+                                                              'Plus Jakarta Sans',
+                                                          color:
+                                                              const Color(0xFF448C94),
+                                                          fontSize: 14.0,
+                                                          letterSpacing: 0.0,
+                                                          fontWeight:
+                                                              FontWeight.normal,
+                                                        ),
+                                              ),
                                             ),
                                           ),
                                           Text(
@@ -568,7 +566,7 @@ class _UserAccountViewWidgetState extends State<UserAccountViewWidget>
                                                 const EdgeInsetsDirectional.fromSTEB(
                                                     0.0, 4.0, 0.0, 5.0),
                                             child: Text(
-                                              'Abdulrhman@gmail.com',
+                                              currentUserEmail,
                                               style:
                                                   FlutterFlowTheme.of(context)
                                                       .labelMedium
@@ -597,21 +595,26 @@ class _UserAccountViewWidgetState extends State<UserAccountViewWidget>
                                             padding:
                                                 const EdgeInsetsDirectional.fromSTEB(
                                                     0.0, 4.0, 0.0, 5.0),
-                                            child: Text(
-                                              'Riyadh',
-                                              style:
-                                                  FlutterFlowTheme.of(context)
-                                                      .labelMedium
-                                                      .override(
-                                                        fontFamily:
-                                                            'Plus Jakarta Sans',
-                                                        color:
-                                                            const Color(0xFF448C94),
-                                                        fontSize: 14.0,
-                                                        letterSpacing: 0.0,
-                                                        fontWeight:
-                                                            FontWeight.normal,
-                                                      ),
+                                            child: AuthUserStreamWidget(
+                                              builder: (context) => Text(
+                                                valueOrDefault(
+                                                    currentUserDocument
+                                                        ?.location,
+                                                    ''),
+                                                style:
+                                                    FlutterFlowTheme.of(context)
+                                                        .labelMedium
+                                                        .override(
+                                                          fontFamily:
+                                                              'Plus Jakarta Sans',
+                                                          color:
+                                                              const Color(0xFF448C94),
+                                                          fontSize: 14.0,
+                                                          letterSpacing: 0.0,
+                                                          fontWeight:
+                                                              FontWeight.normal,
+                                                        ),
+                                              ),
                                             ),
                                           ),
                                         ],
@@ -651,8 +654,13 @@ class _UserAccountViewWidgetState extends State<UserAccountViewWidget>
                               padding: const EdgeInsetsDirectional.fromSTEB(
                                   0.0, 24.0, 0.0, 0.0),
                               child: FFButtonWidget(
-                                onPressed: () {
-                                  print('Button pressed ...');
+                                onPressed: () async {
+                                  GoRouter.of(context).prepareAuthEvent();
+                                  await authManager.signOut();
+                                  GoRouter.of(context).clearRedirectLocation();
+
+                                  context.pushNamedAuth(
+                                      'Start', context.mounted);
                                 },
                                 text: 'Logout',
                                 options: FFButtonOptions(
@@ -682,366 +690,258 @@ class _UserAccountViewWidgetState extends State<UserAccountViewWidget>
                           ),
                         ],
                       ),
-                      ListView(
-                        padding: EdgeInsets.zero,
-                        scrollDirection: Axis.vertical,
-                        children: [
-                          Padding(
-                            padding: const EdgeInsetsDirectional.fromSTEB(
-                                16.0, 12.0, 16.0, 0.0),
-                            child: Container(
-                              width: MediaQuery.sizeOf(context).width * 1.0,
-                              decoration: BoxDecoration(
-                                color: Colors.white,
-                                boxShadow: const [
-                                  BoxShadow(
-                                    blurRadius: 3.0,
-                                    color: Color(0x25000000),
-                                    offset: Offset(
-                                      0.0,
-                                      2.0,
-                                    ),
-                                  )
-                                ],
-                                borderRadius: BorderRadius.circular(8.0),
-                              ),
-                              child: Padding(
-                                padding: const EdgeInsetsDirectional.fromSTEB(
-                                    0.0, 5.0, 0.0, 0.0),
-                                child: Row(
-                                  mainAxisSize: MainAxisSize.min,
-                                  mainAxisAlignment:
-                                      MainAxisAlignment.spaceBetween,
-                                  children: [
-                                    Padding(
-                                      padding: const EdgeInsets.all(4.0),
-                                      child: Container(
-                                        width: 4.0,
-                                        height: 90.0,
-                                        decoration: BoxDecoration(
-                                          color: const Color(0xFF183A43),
-                                          borderRadius:
-                                              BorderRadius.circular(4.0),
-                                        ),
-                                      ),
-                                    ),
-                                    Align(
-                                      alignment: const AlignmentDirectional(0.0, 0.0),
-                                      child: Padding(
-                                        padding: const EdgeInsetsDirectional.fromSTEB(
-                                            0.0, 12.0, 150.0, 12.0),
-                                        child: Column(
-                                          mainAxisSize: MainAxisSize.max,
-                                          mainAxisAlignment:
-                                              MainAxisAlignment.start,
-                                          crossAxisAlignment:
-                                              CrossAxisAlignment.start,
-                                          children: [
-                                            Text(
-                                              'Piano Lesson - Level 1',
-                                              style:
-                                                  FlutterFlowTheme.of(context)
-                                                      .headlineMedium
-                                                      .override(
-                                                        fontFamily: 'Outfit',
-                                                        color:
-                                                            const Color(0xFF183A43),
-                                                        fontSize: 24.0,
-                                                        letterSpacing: 0.0,
-                                                        fontWeight:
-                                                            FontWeight.normal,
-                                                      ),
-                                            ),
-                                            Padding(
-                                              padding: const EdgeInsetsDirectional
-                                                  .fromSTEB(0.0, 4.0, 0.0, 0.0),
-                                              child: Text(
-                                                '9 June 2024',
-                                                style:
-                                                    FlutterFlowTheme.of(context)
-                                                        .labelMedium
-                                                        .override(
-                                                          fontFamily:
-                                                              'Plus Jakarta Sans',
-                                                          color:
-                                                              const Color(0xFF448C94),
-                                                          fontSize: 14.0,
-                                                          letterSpacing: 0.0,
-                                                          fontWeight:
-                                                              FontWeight.normal,
-                                                        ),
-                                              ),
-                                            ),
-                                            RatingBar.builder(
-                                              onRatingUpdate: (newValue) =>
-                                                  setState(() =>
-                                                      _model.ratingBarValue =
-                                                          newValue),
-                                              itemBuilder: (context, index) =>
-                                                  Icon(
-                                                Icons.star_rounded,
-                                                color:
-                                                    FlutterFlowTheme.of(context)
-                                                        .tertiary,
-                                              ),
-                                              direction: Axis.horizontal,
-                                              initialRating:
-                                                  _model.ratingBarValue ??= 3.0,
-                                              unratedColor:
-                                                  FlutterFlowTheme.of(context)
-                                                      .accent3,
-                                              itemCount: 5,
-                                              itemSize: 40.0,
-                                              glowColor:
-                                                  FlutterFlowTheme.of(context)
-                                                      .tertiary,
-                                            ),
-                                          ],
-                                        ),
-                                      ),
-                                    ),
-                                  ],
+                      StreamBuilder<List<ReservationsRecord>>(
+                        stream: queryReservationsRecord(
+                          queryBuilder: (reservationsRecord) =>
+                              reservationsRecord.where(
+                            'userID',
+                            isEqualTo: currentUserReference,
+                          ),
+                        ),
+                        builder: (context, snapshot) {
+                          // Customize what your widget looks like when it's loading.
+                          if (!snapshot.hasData) {
+                            return Center(
+                              child: SizedBox(
+                                width: 50.0,
+                                height: 50.0,
+                                child: CircularProgressIndicator(
+                                  valueColor: AlwaysStoppedAnimation<Color>(
+                                    FlutterFlowTheme.of(context).primary,
+                                  ),
                                 ),
                               ),
-                            ),
-                          ),
-                          Padding(
-                            padding: const EdgeInsetsDirectional.fromSTEB(
-                                16.0, 12.0, 16.0, 0.0),
-                            child: Container(
-                              width: MediaQuery.sizeOf(context).width * 1.0,
-                              decoration: BoxDecoration(
-                                color: Colors.white,
-                                boxShadow: const [
-                                  BoxShadow(
-                                    blurRadius: 3.0,
-                                    color: Color(0x25000000),
-                                    offset: Offset(
-                                      0.0,
-                                      2.0,
-                                    ),
-                                  )
-                                ],
-                                borderRadius: BorderRadius.circular(8.0),
-                              ),
-                              child: Padding(
+                            );
+                          }
+                          List<ReservationsRecord>
+                              listViewReservationsRecordList = snapshot.data!;
+                          return ListView.builder(
+                            padding: EdgeInsets.zero,
+                            scrollDirection: Axis.vertical,
+                            itemCount: listViewReservationsRecordList.length,
+                            itemBuilder: (context, listViewIndex) {
+                              final listViewReservationsRecord =
+                                  listViewReservationsRecordList[listViewIndex];
+                              return Padding(
                                 padding: const EdgeInsetsDirectional.fromSTEB(
-                                    0.0, 5.0, 0.0, 0.0),
-                                child: Row(
-                                  mainAxisSize: MainAxisSize.min,
-                                  mainAxisAlignment:
-                                      MainAxisAlignment.spaceBetween,
-                                  children: [
-                                    Padding(
-                                      padding: const EdgeInsets.all(4.0),
-                                      child: Container(
-                                        width: 4.0,
-                                        height: 90.0,
-                                        decoration: BoxDecoration(
-                                          color: const Color(0xFF183A43),
-                                          borderRadius:
-                                              BorderRadius.circular(4.0),
-                                        ),
-                                      ),
+                                    16.0, 12.0, 16.0, 0.0),
+                                child: InkWell(
+                                  splashColor: Colors.transparent,
+                                  focusColor: Colors.transparent,
+                                  hoverColor: Colors.transparent,
+                                  highlightColor: Colors.transparent,
+                                  onLongPress: () async {
+                                    await showModalBottomSheet(
+                                      isScrollControlled: true,
+                                      backgroundColor: Colors.transparent,
+                                      enableDrag: false,
+                                      context: context,
+                                      builder: (context) {
+                                        return Padding(
+                                          padding:
+                                              MediaQuery.viewInsetsOf(context),
+                                          child: OptionsMenuWidget(
+                                            reservationRef:
+                                                listViewReservationsRecord
+                                                    .reference,
+                                          ),
+                                        );
+                                      },
+                                    ).then((value) => safeSetState(() {}));
+                                  },
+                                  child: Container(
+                                    width:
+                                        MediaQuery.sizeOf(context).width * 1.0,
+                                    decoration: BoxDecoration(
+                                      color: Colors.white,
+                                      boxShadow: const [
+                                        BoxShadow(
+                                          blurRadius: 3.0,
+                                          color: Color(0x25000000),
+                                          offset: Offset(
+                                            0.0,
+                                            2.0,
+                                          ),
+                                        )
+                                      ],
+                                      borderRadius: BorderRadius.circular(8.0),
                                     ),
-                                    Align(
-                                      alignment: const AlignmentDirectional(0.0, 0.0),
-                                      child: Padding(
-                                        padding: const EdgeInsetsDirectional.fromSTEB(
-                                            0.0, 12.0, 83.0, 12.0),
-                                        child: Column(
-                                          mainAxisSize: MainAxisSize.max,
-                                          mainAxisAlignment:
-                                              MainAxisAlignment.start,
-                                          crossAxisAlignment:
-                                              CrossAxisAlignment.start,
-                                          children: [
-                                            Text(
-                                              'Piano Lesson - Level 2',
-                                              style:
-                                                  FlutterFlowTheme.of(context)
-                                                      .headlineMedium
-                                                      .override(
-                                                        fontFamily: 'Outfit',
-                                                        color:
-                                                            const Color(0xFF183A43),
-                                                        fontSize: 24.0,
-                                                        letterSpacing: 0.0,
-                                                        fontWeight:
-                                                            FontWeight.normal,
-                                                      ),
-                                            ),
-                                            Padding(
-                                              padding: const EdgeInsetsDirectional
-                                                  .fromSTEB(0.0, 4.0, 0.0, 0.0),
-                                              child: Text(
-                                                '11 June 2024',
-                                                style:
-                                                    FlutterFlowTheme.of(context)
-                                                        .labelMedium
-                                                        .override(
-                                                          fontFamily:
-                                                              'Plus Jakarta Sans',
-                                                          color:
-                                                              const Color(0xFF448C94),
-                                                          fontSize: 14.0,
-                                                          letterSpacing: 0.0,
-                                                          fontWeight:
-                                                              FontWeight.normal,
-                                                        ),
-                                              ),
-                                            ),
-                                          ],
-                                        ),
-                                      ),
-                                    ),
-                                    Padding(
+                                    child: Padding(
                                       padding: const EdgeInsetsDirectional.fromSTEB(
-                                          0.0, 0.0, 5.0, 0.0),
-                                      child: Column(
-                                        mainAxisSize: MainAxisSize.max,
-                                        children: [
-                                          const Icon(
-                                            Icons.edit,
-                                            color: Color(0xFF448C94),
-                                            size: 24.0,
-                                          ),
-                                          Text(
-                                            'Edit',
-                                            style: FlutterFlowTheme.of(context)
-                                                .bodyMedium
-                                                .override(
-                                                  fontFamily: 'Readex Pro',
-                                                  letterSpacing: 0.0,
-                                                ),
-                                          ),
-                                        ],
-                                      ),
-                                    ),
-                                  ],
-                                ),
-                              ),
-                            ),
-                          ),
-                          Padding(
-                            padding: const EdgeInsetsDirectional.fromSTEB(
-                                16.0, 12.0, 16.0, 0.0),
-                            child: Container(
-                              width: MediaQuery.sizeOf(context).width * 1.0,
-                              decoration: BoxDecoration(
-                                color: Colors.white,
-                                boxShadow: const [
-                                  BoxShadow(
-                                    blurRadius: 3.0,
-                                    color: Color(0x25000000),
-                                    offset: Offset(
-                                      0.0,
-                                      2.0,
-                                    ),
-                                  )
-                                ],
-                                borderRadius: BorderRadius.circular(8.0),
-                              ),
-                              child: Padding(
-                                padding: const EdgeInsetsDirectional.fromSTEB(
-                                    0.0, 5.0, 0.0, 0.0),
-                                child: Row(
-                                  mainAxisSize: MainAxisSize.min,
-                                  mainAxisAlignment:
-                                      MainAxisAlignment.spaceBetween,
-                                  children: [
-                                    Padding(
-                                      padding: const EdgeInsets.all(4.0),
-                                      child: Container(
-                                        width: 4.0,
-                                        height: 90.0,
-                                        decoration: BoxDecoration(
-                                          color: const Color(0xFF183A43),
-                                          borderRadius:
-                                              BorderRadius.circular(4.0),
-                                        ),
-                                      ),
-                                    ),
-                                    Align(
-                                      alignment: const AlignmentDirectional(0.0, 0.0),
-                                      child: Padding(
-                                        padding: const EdgeInsetsDirectional.fromSTEB(
-                                            0.0, 12.0, 83.0, 12.0),
-                                        child: Column(
-                                          mainAxisSize: MainAxisSize.max,
-                                          mainAxisAlignment:
-                                              MainAxisAlignment.start,
-                                          crossAxisAlignment:
-                                              CrossAxisAlignment.start,
-                                          children: [
-                                            Text(
-                                              'Piano Lesson - Level 3',
-                                              style:
-                                                  FlutterFlowTheme.of(context)
-                                                      .headlineMedium
-                                                      .override(
-                                                        fontFamily: 'Outfit',
-                                                        color:
-                                                            const Color(0xFF183A43),
-                                                        fontSize: 24.0,
-                                                        letterSpacing: 0.0,
-                                                        fontWeight:
-                                                            FontWeight.normal,
-                                                      ),
-                                            ),
-                                            Padding(
-                                              padding: const EdgeInsetsDirectional
-                                                  .fromSTEB(0.0, 4.0, 0.0, 0.0),
-                                              child: Text(
-                                                '17 August 2024',
-                                                style:
+                                          0.0, 5.0, 0.0, 0.0),
+                                      child: StreamBuilder<WorkshopsRecord>(
+                                        stream: WorkshopsRecord.getDocument(
+                                            listViewReservationsRecord
+                                                .workshopID!),
+                                        builder: (context, snapshot) {
+                                          // Customize what your widget looks like when it's loading.
+                                          if (!snapshot.hasData) {
+                                            return Center(
+                                              child: SizedBox(
+                                                width: 50.0,
+                                                height: 50.0,
+                                                child:
+                                                    CircularProgressIndicator(
+                                                  valueColor:
+                                                      AlwaysStoppedAnimation<
+                                                          Color>(
                                                     FlutterFlowTheme.of(context)
-                                                        .labelMedium
-                                                        .override(
-                                                          fontFamily:
-                                                              'Plus Jakarta Sans',
-                                                          color:
-                                                              const Color(0xFF448C94),
-                                                          fontSize: 14.0,
-                                                          letterSpacing: 0.0,
-                                                          fontWeight:
-                                                              FontWeight.normal,
-                                                        ),
-                                              ),
-                                            ),
-                                          ],
-                                        ),
-                                      ),
-                                    ),
-                                    Padding(
-                                      padding: const EdgeInsetsDirectional.fromSTEB(
-                                          0.0, 0.0, 5.0, 0.0),
-                                      child: Column(
-                                        mainAxisSize: MainAxisSize.max,
-                                        children: [
-                                          const Icon(
-                                            Icons.edit,
-                                            color: Color(0xFF448C94),
-                                            size: 24.0,
-                                          ),
-                                          Text(
-                                            'Edit',
-                                            style: FlutterFlowTheme.of(context)
-                                                .bodyMedium
-                                                .override(
-                                                  fontFamily: 'Readex Pro',
-                                                  letterSpacing: 0.0,
+                                                        .primary,
+                                                  ),
                                                 ),
-                                          ),
-                                        ],
+                                              ),
+                                            );
+                                          }
+                                          final rowWorkshopsRecord =
+                                              snapshot.data!;
+                                          return Row(
+                                            mainAxisSize: MainAxisSize.min,
+                                            mainAxisAlignment:
+                                                MainAxisAlignment.spaceBetween,
+                                            children: [
+                                              Padding(
+                                                padding: const EdgeInsets.all(4.0),
+                                                child: Container(
+                                                  width: 4.0,
+                                                  height: 90.0,
+                                                  decoration: BoxDecoration(
+                                                    color: const Color(0xFF183A43),
+                                                    borderRadius:
+                                                        BorderRadius.circular(
+                                                            4.0),
+                                                  ),
+                                                ),
+                                              ),
+                                              Align(
+                                                alignment: const AlignmentDirectional(
+                                                    0.0, 0.0),
+                                                child: Padding(
+                                                  padding: const EdgeInsetsDirectional
+                                                      .fromSTEB(0.0, 12.0, 83.0,
+                                                          12.0),
+                                                  child: Column(
+                                                    mainAxisSize:
+                                                        MainAxisSize.max,
+                                                    mainAxisAlignment:
+                                                        MainAxisAlignment.start,
+                                                    crossAxisAlignment:
+                                                        CrossAxisAlignment
+                                                            .start,
+                                                    children: [
+                                                      Text(
+                                                        rowWorkshopsRecord
+                                                            .wname,
+                                                        style: FlutterFlowTheme
+                                                                .of(context)
+                                                            .headlineMedium
+                                                            .override(
+                                                              fontFamily:
+                                                                  'Outfit',
+                                                              color: const Color(
+                                                                  0xFF183A43),
+                                                              fontSize: 24.0,
+                                                              letterSpacing:
+                                                                  0.0,
+                                                              fontWeight:
+                                                                  FontWeight
+                                                                      .normal,
+                                                            ),
+                                                      ),
+                                                      Padding(
+                                                        padding:
+                                                            const EdgeInsetsDirectional
+                                                                .fromSTEB(
+                                                                    0.0,
+                                                                    4.0,
+                                                                    0.0,
+                                                                    0.0),
+                                                        child: Text(
+                                                          listViewReservationsRecord
+                                                              .date,
+                                                          style: FlutterFlowTheme
+                                                                  .of(context)
+                                                              .labelMedium
+                                                              .override(
+                                                                fontFamily:
+                                                                    'Plus Jakarta Sans',
+                                                                color: const Color(
+                                                                    0xFF448C94),
+                                                                fontSize: 14.0,
+                                                                letterSpacing:
+                                                                    0.0,
+                                                                fontWeight:
+                                                                    FontWeight
+                                                                        .normal,
+                                                              ),
+                                                        ),
+                                                      ),
+                                                    ],
+                                                  ),
+                                                ),
+                                              ),
+                                              Padding(
+                                                padding: const EdgeInsetsDirectional
+                                                    .fromSTEB(
+                                                        0.0, 0.0, 5.0, 0.0),
+                                                child: Column(
+                                                  mainAxisSize:
+                                                      MainAxisSize.max,
+                                                  children: [
+                                                    InkWell(
+                                                      splashColor:
+                                                          Colors.transparent,
+                                                      focusColor:
+                                                          Colors.transparent,
+                                                      hoverColor:
+                                                          Colors.transparent,
+                                                      highlightColor:
+                                                          Colors.transparent,
+                                                      onTap: () async {
+                                                        context.pushNamed(
+                                                          'DeleteorEditReservation',
+                                                          queryParameters: {
+                                                            'reservationRef':
+                                                                serializeParam(
+                                                              listViewReservationsRecord
+                                                                  .reference,
+                                                              ParamType
+                                                                  .DocumentReference,
+                                                            ),
+                                                          }.withoutNulls,
+                                                        );
+                                                      },
+                                                      child: const Icon(
+                                                        Icons.edit,
+                                                        color:
+                                                            Color(0xFF448C94),
+                                                        size: 24.0,
+                                                      ),
+                                                    ),
+                                                    Text(
+                                                      'Edit',
+                                                      style: FlutterFlowTheme
+                                                              .of(context)
+                                                          .bodyMedium
+                                                          .override(
+                                                            fontFamily:
+                                                                'Readex Pro',
+                                                            letterSpacing: 0.0,
+                                                          ),
+                                                    ),
+                                                  ],
+                                                ),
+                                              ),
+                                            ],
+                                          );
+                                        },
                                       ),
                                     ),
-                                  ],
+                                  ),
                                 ),
-                              ),
-                            ),
-                          ),
-                        ],
+                              );
+                            },
+                          );
+                        },
                       ),
                     ],
                   ),

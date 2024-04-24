@@ -21,53 +21,55 @@ class _SigninWidgetState extends State<SigninWidget>
 
   final scaffoldKey = GlobalKey<ScaffoldState>();
 
-  final animationsMap = {
-    'containerOnPageLoadAnimation': AnimationInfo(
-      trigger: AnimationTrigger.onPageLoad,
-      effects: [
-        VisibilityEffect(duration: 1.ms),
-        FadeEffect(
-          curve: Curves.easeInOut,
-          delay: 0.ms,
-          duration: 300.ms,
-          begin: 0.0,
-          end: 1.0,
-        ),
-        MoveEffect(
-          curve: Curves.easeInOut,
-          delay: 0.ms,
-          duration: 300.ms,
-          begin: const Offset(0.0, 140.0),
-          end: const Offset(0.0, 0.0),
-        ),
-        ScaleEffect(
-          curve: Curves.easeInOut,
-          delay: 0.ms,
-          duration: 300.ms,
-          begin: const Offset(0.9, 0.9),
-          end: const Offset(1.0, 1.0),
-        ),
-        TiltEffect(
-          curve: Curves.easeInOut,
-          delay: 0.ms,
-          duration: 300.ms,
-          begin: const Offset(-0.349, 0),
-          end: const Offset(0, 0),
-        ),
-      ],
-    ),
-  };
+  final animationsMap = <String, AnimationInfo>{};
 
   @override
   void initState() {
     super.initState();
     _model = createModel(context, () => SigninModel());
 
-    _model.emailAddressController ??= TextEditingController();
+    _model.emailAddressTextController ??= TextEditingController();
     _model.emailAddressFocusNode ??= FocusNode();
 
-    _model.passwordController ??= TextEditingController();
+    _model.passwordTextController ??= TextEditingController();
     _model.passwordFocusNode ??= FocusNode();
+
+    animationsMap.addAll({
+      'containerOnPageLoadAnimation': AnimationInfo(
+        trigger: AnimationTrigger.onPageLoad,
+        effectsBuilder: () => [
+          VisibilityEffect(duration: 1.ms),
+          FadeEffect(
+            curve: Curves.easeInOut,
+            delay: 0.0.ms,
+            duration: 300.0.ms,
+            begin: 0.0,
+            end: 1.0,
+          ),
+          MoveEffect(
+            curve: Curves.easeInOut,
+            delay: 0.0.ms,
+            duration: 300.0.ms,
+            begin: const Offset(0.0, 140.0),
+            end: const Offset(0.0, 0.0),
+          ),
+          ScaleEffect(
+            curve: Curves.easeInOut,
+            delay: 0.0.ms,
+            duration: 300.0.ms,
+            begin: const Offset(0.9, 0.9),
+            end: const Offset(1.0, 1.0),
+          ),
+          TiltEffect(
+            curve: Curves.easeInOut,
+            delay: 0.0.ms,
+            duration: 300.0.ms,
+            begin: const Offset(-0.349, 0),
+            end: const Offset(0, 0),
+          ),
+        ],
+      ),
+    });
   }
 
   @override
@@ -94,14 +96,8 @@ class _SigninWidgetState extends State<SigninWidget>
               child: Container(
                 width: 100.0,
                 height: double.infinity,
-                decoration: BoxDecoration(
-                  image: DecorationImage(
-                    fit: BoxFit.cover,
-                    image: Image.asset(
-                      'assets/images/photo-1477554193778-9562c28588c0?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixid=M3w0NTYyMDF8MHwxfHNlYXJjaHw0fHxwbGFudHN8ZW58MHx8fHwxNzExNDc5OTEzfDA&ixlib=rb-4.0.3&q=80&w=1080',
-                    ).image,
-                  ),
-                  gradient: const LinearGradient(
+                decoration: const BoxDecoration(
+                  gradient: LinearGradient(
                     colors: [
                       Color(0xFF183A43),
                       Color(0xFF2C5B69),
@@ -149,8 +145,8 @@ class _SigninWidgetState extends State<SigninWidget>
                               borderRadius: BorderRadius.circular(8.0),
                               child: Image.asset(
                                 'assets/images/ATHRLOGO.png',
-                                width: 318.0,
-                                height: 135.0,
+                                width: 100.0,
+                                height: 100.0,
                                 fit: BoxFit.cover,
                               ),
                             ),
@@ -230,7 +226,7 @@ class _SigninWidgetState extends State<SigninWidget>
                                         width: double.infinity,
                                         child: TextFormField(
                                           controller:
-                                              _model.emailAddressController,
+                                              _model.emailAddressTextController,
                                           focusNode:
                                               _model.emailAddressFocusNode,
                                           autofocus: true,
@@ -297,11 +293,10 @@ class _SigninWidgetState extends State<SigninWidget>
                                                 fontFamily: 'Readex Pro',
                                                 letterSpacing: 0.0,
                                               ),
-                                          minLines: null,
                                           keyboardType:
                                               TextInputType.emailAddress,
                                           validator: _model
-                                              .emailAddressControllerValidator
+                                              .emailAddressTextControllerValidator
                                               .asValidator(context),
                                         ),
                                       ),
@@ -312,7 +307,8 @@ class _SigninWidgetState extends State<SigninWidget>
                                       child: SizedBox(
                                         width: double.infinity,
                                         child: TextFormField(
-                                          controller: _model.passwordController,
+                                          controller:
+                                              _model.passwordTextController,
                                           focusNode: _model.passwordFocusNode,
                                           autofocus: true,
                                           autofillHints: const [
@@ -400,9 +396,8 @@ class _SigninWidgetState extends State<SigninWidget>
                                                 fontFamily: 'Readex Pro',
                                                 letterSpacing: 0.0,
                                               ),
-                                          minLines: null,
                                           validator: _model
-                                              .passwordControllerValidator
+                                              .passwordTextControllerValidator
                                               .asValidator(context),
                                         ),
                                       ),
@@ -418,15 +413,17 @@ class _SigninWidgetState extends State<SigninWidget>
                                           final user =
                                               await authManager.signInWithEmail(
                                             context,
-                                            _model.emailAddressController.text,
-                                            _model.passwordController.text,
+                                            _model.emailAddressTextController
+                                                .text,
+                                            _model.passwordTextController.text,
                                           );
                                           if (user == null) {
                                             return;
                                           }
 
-                                          context.goNamedAuth(
-                                              'Homepage', context.mounted);
+                                          context.pushNamedAuth(
+                                              'UserAccountView',
+                                              context.mounted);
                                         },
                                         text: 'Log in',
                                         options: FFButtonOptions(
@@ -461,7 +458,7 @@ class _SigninWidgetState extends State<SigninWidget>
                                     // You will have to add an action on this rich text to go to your login page.
                                     Padding(
                                       padding: const EdgeInsetsDirectional.fromSTEB(
-                                          0.0, 2.0, 0.0, 32.0),
+                                          0.0, 2.0, 0.0, 0.0),
                                       child: RichText(
                                         textScaler:
                                             MediaQuery.of(context).textScaler,
@@ -472,7 +469,7 @@ class _SigninWidgetState extends State<SigninWidget>
                                               style: TextStyle(),
                                             ),
                                             TextSpan(
-                                              text: 'Sign Up here',
+                                              text: '',
                                               style: FlutterFlowTheme.of(
                                                       context)
                                                   .bodyMedium
@@ -492,6 +489,55 @@ class _SigninWidgetState extends State<SigninWidget>
                                                 fontFamily: 'Readex Pro',
                                                 letterSpacing: 0.0,
                                               ),
+                                        ),
+                                      ),
+                                    ),
+
+                                    // You will have to add an action on this rich text to go to your login page.
+                                    Padding(
+                                      padding: const EdgeInsetsDirectional.fromSTEB(
+                                          0.0, 2.0, 0.0, 32.0),
+                                      child: InkWell(
+                                        splashColor: Colors.transparent,
+                                        focusColor: Colors.transparent,
+                                        hoverColor: Colors.transparent,
+                                        highlightColor: Colors.transparent,
+                                        onTap: () async {
+                                          context.pushNamed('Signup');
+                                        },
+                                        child: RichText(
+                                          textScaler:
+                                              MediaQuery.of(context).textScaler,
+                                          text: TextSpan(
+                                            children: [
+                                              const TextSpan(
+                                                text: '',
+                                                style: TextStyle(),
+                                              ),
+                                              TextSpan(
+                                                text: 'Sign Up here',
+                                                style: FlutterFlowTheme.of(
+                                                        context)
+                                                    .bodyMedium
+                                                    .override(
+                                                      fontFamily: 'Readex Pro',
+                                                      color:
+                                                          FlutterFlowTheme.of(
+                                                                  context)
+                                                              .primary,
+                                                      letterSpacing: 0.0,
+                                                      fontWeight:
+                                                          FontWeight.w600,
+                                                    ),
+                                              )
+                                            ],
+                                            style: FlutterFlowTheme.of(context)
+                                                .bodyMedium
+                                                .override(
+                                                  fontFamily: 'Readex Pro',
+                                                  letterSpacing: 0.0,
+                                                ),
+                                          ),
                                         ),
                                       ),
                                     ),

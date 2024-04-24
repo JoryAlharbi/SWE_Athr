@@ -36,11 +36,6 @@ class WorkshopsRecord extends FirestoreRecord {
   String get description => _description ?? '';
   bool hasDescription() => _description != null;
 
-  // "img" field.
-  String? _img;
-  String get img => _img ?? '';
-  bool hasImg() => _img != null;
-
   // "instructor" field.
   String? _instructor;
   String get instructor => _instructor ?? '';
@@ -66,17 +61,22 @@ class WorkshopsRecord extends FirestoreRecord {
   int get workshopID => _workshopID ?? 0;
   bool hasWorkshopID() => _workshopID != null;
 
+  // "img" field.
+  String? _img;
+  String get img => _img ?? '';
+  bool hasImg() => _img != null;
+
   void _initializeFields() {
     _wname = snapshotData['Wname'] as String?;
     _capacity = castToType<int>(snapshotData['capacity']);
     _date = snapshotData['date'] as String?;
     _description = snapshotData['description'] as String?;
-    _img = snapshotData['img'] as String?;
     _instructor = snapshotData['instructor'] as String?;
     _location = snapshotData['location'] as String?;
     _price = castToType<int>(snapshotData['price']);
     _time = snapshotData['time'] as String?;
     _workshopID = castToType<int>(snapshotData['workshopID']);
+    _img = snapshotData['img'] as String?;
   }
 
   static CollectionReference get collection =>
@@ -118,12 +118,12 @@ Map<String, dynamic> createWorkshopsRecordData({
   int? capacity,
   String? date,
   String? description,
-  String? img,
   String? instructor,
   String? location,
   int? price,
   String? time,
   int? workshopID,
+  String? img,
 }) {
   final firestoreData = mapToFirestore(
     <String, dynamic>{
@@ -131,12 +131,12 @@ Map<String, dynamic> createWorkshopsRecordData({
       'capacity': capacity,
       'date': date,
       'description': description,
-      'img': img,
       'instructor': instructor,
       'location': location,
       'price': price,
       'time': time,
       'workshopID': workshopID,
+      'img': img,
     }.withoutNulls,
   );
 
@@ -152,12 +152,12 @@ class WorkshopsRecordDocumentEquality implements Equality<WorkshopsRecord> {
         e1?.capacity == e2?.capacity &&
         e1?.date == e2?.date &&
         e1?.description == e2?.description &&
-        e1?.img == e2?.img &&
         e1?.instructor == e2?.instructor &&
         e1?.location == e2?.location &&
         e1?.price == e2?.price &&
         e1?.time == e2?.time &&
-        e1?.workshopID == e2?.workshopID;
+        e1?.workshopID == e2?.workshopID &&
+        e1?.img == e2?.img;
   }
 
   @override
@@ -166,12 +166,12 @@ class WorkshopsRecordDocumentEquality implements Equality<WorkshopsRecord> {
         e?.capacity,
         e?.date,
         e?.description,
-        e?.img,
         e?.instructor,
         e?.location,
         e?.price,
         e?.time,
-        e?.workshopID
+        e?.workshopID,
+        e?.img
       ]);
 
   @override

@@ -6,35 +6,35 @@ class SignupModel extends FlutterFlowModel<SignupWidget> {
   ///  State fields for stateful widgets in this page.
 
   final unfocusNode = FocusNode();
+  // State field(s) for name widget.
+  FocusNode? nameFocusNode;
+  TextEditingController? nameTextController;
+  String? Function(BuildContext, String?)? nameTextControllerValidator;
+  // State field(s) for lname widget.
+  FocusNode? lnameFocusNode;
+  TextEditingController? lnameTextController;
+  String? Function(BuildContext, String?)? lnameTextControllerValidator;
+  // State field(s) for username widget.
+  FocusNode? usernameFocusNode;
+  TextEditingController? usernameTextController;
+  String? Function(BuildContext, String?)? usernameTextControllerValidator;
   // State field(s) for emailAddress widget.
-  FocusNode? emailAddressFocusNode1;
-  TextEditingController? emailAddressController1;
-  String? Function(BuildContext, String?)? emailAddressController1Validator;
-  // State field(s) for emailAddress widget.
-  FocusNode? emailAddressFocusNode2;
-  TextEditingController? emailAddressController2;
-  String? Function(BuildContext, String?)? emailAddressController2Validator;
-  // State field(s) for emailAddress widget.
-  FocusNode? emailAddressFocusNode3;
-  TextEditingController? emailAddressController3;
-  String? Function(BuildContext, String?)? emailAddressController3Validator;
-  // State field(s) for emailAddress widget.
-  FocusNode? emailAddressFocusNode4;
-  TextEditingController? emailAddressController4;
-  String? Function(BuildContext, String?)? emailAddressController4Validator;
-  // State field(s) for emailAddress widget.
-  FocusNode? emailAddressFocusNode5;
-  TextEditingController? emailAddressController5;
-  String? Function(BuildContext, String?)? emailAddressController5Validator;
-  // State field(s) for emailAddress widget.
-  FocusNode? emailAddressFocusNode6;
-  TextEditingController? emailAddressController6;
-  String? Function(BuildContext, String?)? emailAddressController6Validator;
+  FocusNode? emailAddressFocusNode;
+  TextEditingController? emailAddressTextController;
+  String? Function(BuildContext, String?)? emailAddressTextControllerValidator;
+  // State field(s) for number widget.
+  FocusNode? numberFocusNode;
+  TextEditingController? numberTextController;
+  String? Function(BuildContext, String?)? numberTextControllerValidator;
+  // State field(s) for city widget.
+  FocusNode? cityFocusNode;
+  TextEditingController? cityTextController;
+  String? Function(BuildContext, String?)? cityTextControllerValidator;
   // State field(s) for password widget.
   FocusNode? passwordFocusNode;
-  TextEditingController? passwordController;
+  TextEditingController? passwordTextController;
   late bool passwordVisibility;
-  String? Function(BuildContext, String?)? passwordControllerValidator;
+  String? Function(BuildContext, String?)? passwordTextControllerValidator;
 
   @override
   void initState(BuildContext context) {
@@ -44,25 +44,25 @@ class SignupModel extends FlutterFlowModel<SignupWidget> {
   @override
   void dispose() {
     unfocusNode.dispose();
-    emailAddressFocusNode1?.dispose();
-    emailAddressController1?.dispose();
+    nameFocusNode?.dispose();
+    nameTextController?.dispose();
 
-    emailAddressFocusNode2?.dispose();
-    emailAddressController2?.dispose();
+    lnameFocusNode?.dispose();
+    lnameTextController?.dispose();
 
-    emailAddressFocusNode3?.dispose();
-    emailAddressController3?.dispose();
+    usernameFocusNode?.dispose();
+    usernameTextController?.dispose();
 
-    emailAddressFocusNode4?.dispose();
-    emailAddressController4?.dispose();
+    emailAddressFocusNode?.dispose();
+    emailAddressTextController?.dispose();
 
-    emailAddressFocusNode5?.dispose();
-    emailAddressController5?.dispose();
+    numberFocusNode?.dispose();
+    numberTextController?.dispose();
 
-    emailAddressFocusNode6?.dispose();
-    emailAddressController6?.dispose();
+    cityFocusNode?.dispose();
+    cityTextController?.dispose();
 
     passwordFocusNode?.dispose();
-    passwordController?.dispose();
+    passwordTextController?.dispose();
   }
 }

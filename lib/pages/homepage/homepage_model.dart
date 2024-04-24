@@ -3,13 +3,13 @@ import 'homepage_widget.dart' show HomepageWidget;
 import 'package:flutter/material.dart';
 
 class HomepageModel extends FlutterFlowModel<HomepageWidget> {
+  ///  Local state fields for this page.
+
+  DocumentReference? workshopRef;
+
   ///  State fields for stateful widgets in this page.
 
   final unfocusNode = FocusNode();
-  // State field(s) for TextField widget.
-  FocusNode? textFieldFocusNode;
-  TextEditingController? textController;
-  String? Function(BuildContext, String?)? textControllerValidator;
 
   @override
   void initState(BuildContext context) {}
@@ -17,7 +17,5 @@ class HomepageModel extends FlutterFlowModel<HomepageWidget> {
   @override
   void dispose() {
     unfocusNode.dispose();
-    textFieldFocusNode?.dispose();
-    textController?.dispose();
   }
 }

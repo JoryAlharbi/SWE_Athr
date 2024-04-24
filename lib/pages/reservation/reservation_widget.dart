@@ -1,5 +1,7 @@
+import '/auth/firebase_auth/auth_util.dart';
+import '/backend/backend.dart';
 import '/flutter_flow/flutter_flow_animations.dart';
-import '/flutter_flow/flutter_flow_calendar.dart';
+import '/flutter_flow/flutter_flow_icon_button.dart';
 import '/flutter_flow/flutter_flow_theme.dart';
 import '/flutter_flow/flutter_flow_util.dart';
 import '/flutter_flow/flutter_flow_widgets.dart';
@@ -11,7 +13,12 @@ import 'reservation_model.dart';
 export 'reservation_model.dart';
 
 class ReservationWidget extends StatefulWidget {
-  const ReservationWidget({super.key});
+  const ReservationWidget({
+    super.key,
+    this.wsRef,
+  });
+
+  final DocumentReference? wsRef;
 
   @override
   State<ReservationWidget> createState() => _ReservationWidgetState();
@@ -23,74 +30,76 @@ class _ReservationWidgetState extends State<ReservationWidget>
 
   final scaffoldKey = GlobalKey<ScaffoldState>();
 
-  final animationsMap = {
-    'imageOnPageLoadAnimation': AnimationInfo(
-      trigger: AnimationTrigger.onPageLoad,
-      effects: [
-        VisibilityEffect(duration: 1.ms),
-        FadeEffect(
-          curve: Curves.easeInOut,
-          delay: 0.ms,
-          duration: 500.ms,
-          begin: 0.0,
-          end: 1.0,
-        ),
-        ScaleEffect(
-          curve: Curves.easeInOut,
-          delay: 0.ms,
-          duration: 500.ms,
-          begin: const Offset(1.7, 1.7),
-          end: const Offset(1.0, 1.0),
-        ),
-        MoveEffect(
-          curve: Curves.easeInOut,
-          delay: 0.ms,
-          duration: 500.ms,
-          begin: const Offset(0.0, 200.0),
-          end: const Offset(0.0, 0.0),
-        ),
-      ],
-    ),
-    'blurOnPageLoadAnimation': AnimationInfo(
-      trigger: AnimationTrigger.onPageLoad,
-      effects: [
-        VisibilityEffect(duration: 200.ms),
-        FadeEffect(
-          curve: Curves.easeInOut,
-          delay: 200.ms,
-          duration: 500.ms,
-          begin: 0.0,
-          end: 1.0,
-        ),
-        TiltEffect(
-          curve: Curves.easeInOut,
-          delay: 200.ms,
-          duration: 500.ms,
-          begin: const Offset(0.698, 0),
-          end: const Offset(0, 0),
-        ),
-        ScaleEffect(
-          curve: Curves.easeInOut,
-          delay: 200.ms,
-          duration: 500.ms,
-          begin: const Offset(0.7, 0.7),
-          end: const Offset(1.0, 1.0),
-        ),
-        MoveEffect(
-          curve: Curves.easeInOut,
-          delay: 200.ms,
-          duration: 500.ms,
-          begin: const Offset(0.0, 30.0),
-          end: const Offset(0.0, 0.0),
-        ),
-      ],
-    ),
-  };
+  final animationsMap = <String, AnimationInfo>{};
 
   @override
   void initState() {
     super.initState();
     _model = createModel(context, () => ReservationModel());
+
+    animationsMap.addAll({
+      'imageOnPageLoadAnimation': AnimationInfo(
+        trigger: AnimationTrigger.onPageLoad,
+        effectsBuilder: () => [
+          VisibilityEffect(duration: 1.ms),
+          FadeEffect(
+            curve: Curves.easeInOut,
+            delay: 0.0.ms,
+            duration: 500.0.ms,
+            begin: 0.0,
+            end: 1.0,
+          ),
+          ScaleEffect(
+            curve: Curves.easeInOut,
+            delay: 0.0.ms,
+            duration: 500.0.ms,
+            begin: const Offset(1.7, 1.7),
+            end: const Offset(1.0, 1.0),
+          ),
+          MoveEffect(
+            curve: Curves.easeInOut,
+            delay: 0.0.ms,
+            duration: 500.0.ms,
+            begin: const Offset(0.0, 200.0),
+            end: const Offset(0.0, 0.0),
+          ),
+        ],
+      ),
+      'blurOnPageLoadAnimation': AnimationInfo(
+        trigger: AnimationTrigger.onPageLoad,
+        effectsBuilder: () => [
+          VisibilityEffect(duration: 200.ms),
+          FadeEffect(
+            curve: Curves.easeInOut,
+            delay: 200.0.ms,
+            duration: 500.0.ms,
+            begin: 0.0,
+            end: 1.0,
+          ),
+          TiltEffect(
+            curve: Curves.easeInOut,
+            delay: 200.0.ms,
+            duration: 500.0.ms,
+            begin: const Offset(0.698, 0),
+            end: const Offset(0, 0),
+          ),
+          ScaleEffect(
+            curve: Curves.easeInOut,
+            delay: 200.0.ms,
+            duration: 500.0.ms,
+            begin: const Offset(0.7, 0.7),
+            end: const Offset(1.0, 1.0),
+          ),
+          MoveEffect(
+            curve: Curves.easeInOut,
+            delay: 200.0.ms,
+            duration: 500.0.ms,
+            begin: const Offset(0.0, 30.0),
+            end: const Offset(0.0, 0.0),
+          ),
+        ],
+      ),
+    });
   }
 
   @override
@@ -109,6 +118,39 @@ class _ReservationWidgetState extends State<ReservationWidget>
       child: Scaffold(
         key: scaffoldKey,
         backgroundColor: FlutterFlowTheme.of(context).primaryBackground,
+        appBar: AppBar(
+          backgroundColor: const Color(0xFF183A43),
+          automaticallyImplyLeading: false,
+          leading: FlutterFlowIconButton(
+            borderColor: Colors.transparent,
+            borderRadius: 30.0,
+            borderWidth: 1.0,
+            buttonSize: 60.0,
+            icon: const Icon(
+              Icons.arrow_back_rounded,
+              color: Colors.white,
+              size: 30.0,
+            ),
+            onPressed: () async {
+              context.pop();
+            },
+          ),
+          title: Padding(
+            padding: const EdgeInsetsDirectional.fromSTEB(24.0, 0.0, 0.0, 0.0),
+            child: Text(
+              'Page Title',
+              style: FlutterFlowTheme.of(context).headlineMedium.override(
+                    fontFamily: 'Outfit',
+                    color: Colors.white,
+                    fontSize: 22.0,
+                    letterSpacing: 0.0,
+                  ),
+            ),
+          ),
+          actions: const [],
+          centerTitle: false,
+          elevation: 2.0,
+        ),
         body: SafeArea(
           top: true,
           child: SingleChildScrollView(
@@ -369,7 +411,7 @@ class _ReservationWidgetState extends State<ReservationWidget>
                                                 ].divide(const SizedBox(width: 4.0)),
                                               ),
                                               Text(
-                                                'Enrolling in a pottery workshop offers a unique opportunity for participants to dive into the ancient and expressive art of pottery making. In this workshop, you will learn the basics of clay formation, from initial clay preparation to hand-building and wheel-throwing techniques. Whether you\'re a beginner looking to try something new or an artist aiming to refine your skills, this workshop provides a supportive and inspiring environment for everyone to learn and create.',
+                                                'Enrolling in a pottery workshop offers a unique opportunity for participants to dive into the ancient and expressive art of pottery making. In this workshop, you will learn the basics of clay formation, from initial clay preparation to hand-building and wheel-throwing techniques. Whether you\'re a beginner looking to try something new or an artist aiming to refine your skills, this workshop provides a supportive and inspiring environment for everyone to learn and create.\n\nTime : 2:00PM',
                                                 style:
                                                     FlutterFlowTheme.of(context)
                                                         .bodyMedium
@@ -437,68 +479,6 @@ class _ReservationWidgetState extends State<ReservationWidget>
                                                       ),
                                                     ].divide(
                                                         const SizedBox(width: 4.0)),
-                                                  ),
-                                                  FFButtonWidget(
-                                                    onPressed: () {
-                                                      print(
-                                                          'Button pressed ...');
-                                                    },
-                                                    text: 'reservation',
-                                                    options: FFButtonOptions(
-                                                      height: 40.0,
-                                                      padding:
-                                                          const EdgeInsetsDirectional
-                                                              .fromSTEB(
-                                                                  24.0,
-                                                                  0.0,
-                                                                  24.0,
-                                                                  0.0),
-                                                      iconPadding:
-                                                          const EdgeInsetsDirectional
-                                                              .fromSTEB(
-                                                                  0.0,
-                                                                  0.0,
-                                                                  0.0,
-                                                                  0.0),
-                                                      color: const Color(0xFF183A43),
-                                                      textStyle:
-                                                          FlutterFlowTheme.of(
-                                                                  context)
-                                                              .titleSmall
-                                                              .override(
-                                                                fontFamily:
-                                                                    'Readex Pro',
-                                                                color: Colors
-                                                                    .white,
-                                                                letterSpacing:
-                                                                    0.0,
-                                                              ),
-                                                      elevation: 3.0,
-                                                      borderSide: const BorderSide(
-                                                        color:
-                                                            Colors.transparent,
-                                                        width: 2.0,
-                                                      ),
-                                                      borderRadius:
-                                                          BorderRadius.circular(
-                                                              12.0),
-                                                      hoverColor:
-                                                          FlutterFlowTheme.of(
-                                                                  context)
-                                                              .accent1,
-                                                      hoverBorderSide:
-                                                          BorderSide(
-                                                        color:
-                                                            FlutterFlowTheme.of(
-                                                                    context)
-                                                                .primary,
-                                                        width: 2.0,
-                                                      ),
-                                                      hoverTextColor:
-                                                          FlutterFlowTheme.of(
-                                                                  context)
-                                                              .primaryText,
-                                                    ),
                                                   ),
                                                 ],
                                               ),
@@ -613,62 +593,6 @@ class _ReservationWidgetState extends State<ReservationWidget>
                                                     FlutterFlowTheme.of(context)
                                                         .alternate,
                                               ),
-                                              FlutterFlowCalendar(
-                                                color:
-                                                    FlutterFlowTheme.of(context)
-                                                        .primary,
-                                                iconColor:
-                                                    FlutterFlowTheme.of(context)
-                                                        .secondaryText,
-                                                weekFormat: false,
-                                                weekStartsMonday: false,
-                                                rowHeight: 40.0,
-                                                onChange: (DateTimeRange?
-                                                    newSelectedDate) {
-                                                  setState(() => _model
-                                                          .calendarSelectedDay =
-                                                      newSelectedDate);
-                                                },
-                                                titleStyle:
-                                                    FlutterFlowTheme.of(context)
-                                                        .headlineSmall
-                                                        .override(
-                                                          fontFamily: 'Outfit',
-                                                          letterSpacing: 0.0,
-                                                        ),
-                                                dayOfWeekStyle:
-                                                    FlutterFlowTheme.of(context)
-                                                        .labelLarge
-                                                        .override(
-                                                          fontFamily:
-                                                              'Readex Pro',
-                                                          letterSpacing: 0.0,
-                                                        ),
-                                                dateStyle:
-                                                    FlutterFlowTheme.of(context)
-                                                        .bodyMedium
-                                                        .override(
-                                                          fontFamily:
-                                                              'Readex Pro',
-                                                          letterSpacing: 0.0,
-                                                        ),
-                                                selectedDateStyle:
-                                                    FlutterFlowTheme.of(context)
-                                                        .titleSmall
-                                                        .override(
-                                                          fontFamily:
-                                                              'Readex Pro',
-                                                          letterSpacing: 0.0,
-                                                        ),
-                                                inactiveDateStyle:
-                                                    FlutterFlowTheme.of(context)
-                                                        .labelMedium
-                                                        .override(
-                                                          fontFamily:
-                                                              'Readex Pro',
-                                                          letterSpacing: 0.0,
-                                                        ),
-                                              ),
                                               Divider(
                                                 height: 16.0,
                                                 thickness: 1.0,
@@ -703,6 +627,108 @@ class _ReservationWidgetState extends State<ReservationWidget>
                                         ),
                                       ),
                                     ),
+                                    Padding(
+                                      padding: const EdgeInsetsDirectional.fromSTEB(
+                                          10.0, 20.0, 10.0, 20.0),
+                                      child: Row(
+                                        mainAxisSize: MainAxisSize.max,
+                                        children: [
+                                          Text(
+                                            'Pick a suitable date ',
+                                            style: FlutterFlowTheme.of(context)
+                                                .bodyMedium
+                                                .override(
+                                                  fontFamily: 'Readex Pro',
+                                                  fontSize: 26.0,
+                                                  letterSpacing: 0.0,
+                                                  fontWeight: FontWeight.bold,
+                                                ),
+                                          ),
+                                          InkWell(
+                                            splashColor: Colors.transparent,
+                                            focusColor: Colors.transparent,
+                                            hoverColor: Colors.transparent,
+                                            highlightColor: Colors.transparent,
+                                            onTap: () async {
+                                              final datePickedDate =
+                                                  await showDatePicker(
+                                                context: context,
+                                                initialDate:
+                                                    getCurrentTimestamp,
+                                                firstDate: getCurrentTimestamp,
+                                                lastDate: DateTime(2050),
+                                                builder: (context, child) {
+                                                  return wrapInMaterialDatePickerTheme(
+                                                    context,
+                                                    child!,
+                                                    headerBackgroundColor:
+                                                        FlutterFlowTheme.of(
+                                                                context)
+                                                            .primary,
+                                                    headerForegroundColor:
+                                                        FlutterFlowTheme.of(
+                                                                context)
+                                                            .info,
+                                                    headerTextStyle:
+                                                        FlutterFlowTheme.of(
+                                                                context)
+                                                            .headlineLarge
+                                                            .override(
+                                                              fontFamily:
+                                                                  'Outfit',
+                                                              fontSize: 32.0,
+                                                              letterSpacing:
+                                                                  0.0,
+                                                              fontWeight:
+                                                                  FontWeight
+                                                                      .w600,
+                                                            ),
+                                                    pickerBackgroundColor:
+                                                        FlutterFlowTheme.of(
+                                                                context)
+                                                            .secondaryBackground,
+                                                    pickerForegroundColor:
+                                                        FlutterFlowTheme.of(
+                                                                context)
+                                                            .primaryText,
+                                                    selectedDateTimeBackgroundColor:
+                                                        FlutterFlowTheme.of(
+                                                                context)
+                                                            .primary,
+                                                    selectedDateTimeForegroundColor:
+                                                        FlutterFlowTheme.of(
+                                                                context)
+                                                            .info,
+                                                    actionButtonForegroundColor:
+                                                        FlutterFlowTheme.of(
+                                                                context)
+                                                            .primaryText,
+                                                    iconSize: 24.0,
+                                                  );
+                                                },
+                                              );
+
+                                              if (datePickedDate != null) {
+                                                safeSetState(() {
+                                                  _model.datePicked = DateTime(
+                                                    datePickedDate.year,
+                                                    datePickedDate.month,
+                                                    datePickedDate.day,
+                                                  );
+                                                });
+                                              }
+                                            },
+                                            child: Icon(
+                                              Icons.calendar_month,
+                                              color:
+                                                  FlutterFlowTheme.of(context)
+                                                      .secondaryText,
+                                              size: 24.0,
+                                            ),
+                                          ),
+                                        ],
+                                      ),
+                                    ),
                                   ],
                                 ),
                               ),
@@ -712,6 +738,77 @@ class _ReservationWidgetState extends State<ReservationWidget>
                         ),
                       ),
                     ],
+                  ),
+                ),
+                Padding(
+                  padding: const EdgeInsetsDirectional.fromSTEB(0.0, 20.0, 0.0, 0.0),
+                  child: FFButtonWidget(
+                    onPressed: () async {
+                      var confirmDialogResponse = await showDialog<bool>(
+                            context: context,
+                            builder: (alertDialogContext) {
+                              return AlertDialog(
+                                title: const Text('Reservation Confirmation '),
+                                content: const Text(
+                                    'Are you sure you want to reserve on the selcted day?'),
+                                actions: [
+                                  TextButton(
+                                    onPressed: () => Navigator.pop(
+                                        alertDialogContext, false),
+                                    child: const Text('Cancel'),
+                                  ),
+                                  TextButton(
+                                    onPressed: () =>
+                                        Navigator.pop(alertDialogContext, true),
+                                    child: const Text('Confirm'),
+                                  ),
+                                ],
+                              );
+                            },
+                          ) ??
+                          false;
+                      if (confirmDialogResponse) {
+                        await ReservationsRecord.collection
+                            .doc()
+                            .set(createReservationsRecordData(
+                              date: _model.datePicked?.toString(),
+                              userID: currentUserReference,
+                              workshopID: widget.wsRef,
+                              time: '02:00pm',
+                            ));
+
+                        context.pushNamed('UserAccountView');
+                      } else {
+                        Navigator.pop(context);
+                      }
+                    },
+                    text: 'Reserve',
+                    options: FFButtonOptions(
+                      height: 40.0,
+                      padding:
+                          const EdgeInsetsDirectional.fromSTEB(24.0, 0.0, 24.0, 0.0),
+                      iconPadding:
+                          const EdgeInsetsDirectional.fromSTEB(0.0, 0.0, 0.0, 0.0),
+                      color: const Color(0xFF183A43),
+                      textStyle:
+                          FlutterFlowTheme.of(context).titleSmall.override(
+                                fontFamily: 'Readex Pro',
+                                color: Colors.white,
+                                letterSpacing: 0.0,
+                              ),
+                      elevation: 3.0,
+                      borderSide: const BorderSide(
+                        color: Colors.transparent,
+                        width: 2.0,
+                      ),
+                      borderRadius: BorderRadius.circular(12.0),
+                      hoverColor: FlutterFlowTheme.of(context).accent1,
+                      hoverBorderSide: BorderSide(
+                        color: FlutterFlowTheme.of(context).primary,
+                        width: 2.0,
+                      ),
+                      hoverTextColor: FlutterFlowTheme.of(context).primaryText,
+                    ),
                   ),
                 ),
               ].addToEnd(const SizedBox(height: 38.0)),
