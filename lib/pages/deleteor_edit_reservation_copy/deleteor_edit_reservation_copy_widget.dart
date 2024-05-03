@@ -6,11 +6,11 @@ import '/flutter_flow/flutter_flow_util.dart';
 import '/flutter_flow/flutter_flow_widgets.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/scheduler.dart';
-import 'deleteor_edit_reservation_model.dart';
-export 'deleteor_edit_reservation_model.dart';
+import 'deleteor_edit_reservation_copy_model.dart';
+export 'deleteor_edit_reservation_copy_model.dart';
 
-class DeleteorEditReservationWidget extends StatefulWidget {
-  const DeleteorEditReservationWidget({
+class DeleteorEditReservationCopyWidget extends StatefulWidget {
+  const DeleteorEditReservationCopyWidget({
     super.key,
     required this.reservationRef,
   });
@@ -18,20 +18,20 @@ class DeleteorEditReservationWidget extends StatefulWidget {
   final DocumentReference? reservationRef;
 
   @override
-  State<DeleteorEditReservationWidget> createState() =>
-      _DeleteorEditReservationWidgetState();
+  State<DeleteorEditReservationCopyWidget> createState() =>
+      _DeleteorEditReservationCopyWidgetState();
 }
 
-class _DeleteorEditReservationWidgetState
-    extends State<DeleteorEditReservationWidget> {
-  late DeleteorEditReservationModel _model;
+class _DeleteorEditReservationCopyWidgetState
+    extends State<DeleteorEditReservationCopyWidget> {
+  late DeleteorEditReservationCopyModel _model;
 
   final scaffoldKey = GlobalKey<ScaffoldState>();
 
   @override
   void initState() {
     super.initState();
-    _model = createModel(context, () => DeleteorEditReservationModel());
+    _model = createModel(context, () => DeleteorEditReservationCopyModel());
 
     // On page load action.
     SchedulerBinding.instance.addPostFrameCallback((_) async {
@@ -204,9 +204,9 @@ class _DeleteorEditReservationWidgetState
                       if (confirmDialogResponse) {
                         await widget.reservationRef!
                             .update(createReservationsRecordData(
+                          date: dateTimeFormat('d/M/y', _model.datePicked),
                           reservationID: widget.reservationRef?.id,
                           userID: currentUserReference,
-                          nDate: _model.datePicked,
                         ));
 
                         context.pushNamed('UserAccountView');

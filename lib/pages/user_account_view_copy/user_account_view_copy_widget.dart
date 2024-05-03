@@ -10,11 +10,11 @@ import 'package:smooth_page_indicator/smooth_page_indicator.dart'
 import 'package:flutter/material.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:infinite_scroll_pagination/infinite_scroll_pagination.dart';
-import 'user_account_view_model.dart';
-export 'user_account_view_model.dart';
+import 'user_account_view_copy_model.dart';
+export 'user_account_view_copy_model.dart';
 
-class UserAccountViewWidget extends StatefulWidget {
-  const UserAccountViewWidget({
+class UserAccountViewCopyWidget extends StatefulWidget {
+  const UserAccountViewCopyWidget({
     super.key,
     String? firstName,
     this.workshopID,
@@ -24,19 +24,20 @@ class UserAccountViewWidget extends StatefulWidget {
   final DocumentReference? workshopID;
 
   @override
-  State<UserAccountViewWidget> createState() => _UserAccountViewWidgetState();
+  State<UserAccountViewCopyWidget> createState() =>
+      _UserAccountViewCopyWidgetState();
 }
 
-class _UserAccountViewWidgetState extends State<UserAccountViewWidget>
+class _UserAccountViewCopyWidgetState extends State<UserAccountViewCopyWidget>
     with TickerProviderStateMixin {
-  late UserAccountViewModel _model;
+  late UserAccountViewCopyModel _model;
 
   final scaffoldKey = GlobalKey<ScaffoldState>();
 
   @override
   void initState() {
     super.initState();
-    _model = createModel(context, () => UserAccountViewModel());
+    _model = createModel(context, () => UserAccountViewCopyModel());
 
     _model.tabBarController = TabController(
       vsync: this,
@@ -694,10 +695,7 @@ class _UserAccountViewWidgetState extends State<UserAccountViewWidget>
                       PagedListView<DocumentSnapshot<Object?>?,
                           ReservationsRecord>(
                         pagingController: _model.setListViewController2(
-                          ReservationsRecord.collection.where(
-                            'userID',
-                            isEqualTo: currentUserReference,
-                          ),
+                          ReservationsRecord.collection,
                         ),
                         padding: EdgeInsets.zero,
                         reverse: false,

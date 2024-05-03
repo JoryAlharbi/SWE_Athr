@@ -836,6 +836,8 @@ class _SignupWidgetState extends State<SignupWidget>
                                                   .cityTextController.text,
                                               username: _model
                                                   .usernameTextController.text,
+                                              phoneNumber: _model
+                                                  .numberTextController.text,
                                             ));
 
                                         context.pushNamedAuth(

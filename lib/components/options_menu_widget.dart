@@ -1,3 +1,4 @@
+import '/backend/backend.dart';
 import '/flutter_flow/flutter_flow_theme.dart';
 import '/flutter_flow/flutter_flow_util.dart';
 import 'package:flutter/material.dart';
@@ -10,7 +11,7 @@ class OptionsMenuWidget extends StatefulWidget {
     required this.reservationRef,
   });
 
-  final DocumentReference? reservationRef;
+  final ReservationsRecord? reservationRef;
 
   @override
   State<OptionsMenuWidget> createState() => _OptionsMenuWidgetState();
@@ -46,7 +47,32 @@ class _OptionsMenuWidgetState extends State<OptionsMenuWidget> {
       hoverColor: Colors.transparent,
       highlightColor: Colors.transparent,
       onTap: () async {
-        await widget.reservationRef!.delete();
+        var confirmDialogResponse = await showDialog<bool>(
+              context: context,
+              builder: (alertDialogContext) {
+                return AlertDialog(
+                  title: const Text('Delete Reservation?'),
+                  content:
+                      const Text('Are you sure you want to delete your reservation?'),
+                  actions: [
+                    TextButton(
+                      onPressed: () => Navigator.pop(alertDialogContext, false),
+                      child: const Text('Cancel'),
+                    ),
+                    TextButton(
+                      onPressed: () => Navigator.pop(alertDialogContext, true),
+                      child: const Text('Confirm'),
+                    ),
+                  ],
+                );
+              },
+            ) ??
+            false;
+        if (confirmDialogResponse) {
+          await widget.reservationRef!.reference.delete();
+        }
+
+        context.pushNamed('UserAccountViewCopy');
       },
       child: Container(
         width: double.infinity,

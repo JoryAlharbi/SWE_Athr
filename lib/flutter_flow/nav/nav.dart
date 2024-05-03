@@ -96,8 +96,8 @@ GoRouter createRouter(AppStateNotifier appStateNotifier) => GoRouter(
                     workshopID: params.getParam(
                       'workshopID',
                       ParamType.DocumentReference,
-                      false,
-                      ['Workshops'],
+                      isList: false,
+                      collectionNamePath: ['Workshops'],
                     ),
                   ),
                 ),
@@ -135,8 +135,8 @@ GoRouter createRouter(AppStateNotifier appStateNotifier) => GoRouter(
                     workshopRef: params.getParam(
                       'workshopRef',
                       ParamType.DocumentReference,
-                      false,
-                      ['Workshops'],
+                      isList: false,
+                      collectionNamePath: ['Workshops'],
                     ),
                   ),
                 ),
@@ -158,8 +158,8 @@ GoRouter createRouter(AppStateNotifier appStateNotifier) => GoRouter(
             wsRef: params.getParam(
               'wsRef',
               ParamType.DocumentReference,
-              false,
-              ['Workshops'],
+              isList: false,
+              collectionNamePath: ['Workshops'],
             ),
           ),
         ),
@@ -170,8 +170,8 @@ GoRouter createRouter(AppStateNotifier appStateNotifier) => GoRouter(
             reservationRef: params.getParam(
               'reservationRef',
               ParamType.DocumentReference,
-              false,
-              ['Reservations'],
+              isList: false,
+              collectionNamePath: ['Reservations'],
             ),
           ),
         ),
@@ -184,6 +184,64 @@ GoRouter createRouter(AppStateNotifier appStateNotifier) => GoRouter(
           name: 'searchpage',
           path: '/searchpage',
           builder: (context, params) => const SearchpageWidget(),
+        ),
+        FFRoute(
+          name: 'HomepageCopy',
+          path: '/homepageCopy',
+          builder: (context, params) => NavBarPage(
+            initialPage: '',
+            page: HomepageCopyWidget(
+              workshopRef: params.getParam(
+                'workshopRef',
+                ParamType.DocumentReference,
+                isList: false,
+                collectionNamePath: ['Workshops'],
+              ),
+            ),
+          ),
+        ),
+        FFRoute(
+          name: 'ReservationCopy',
+          path: '/reservationCopy',
+          builder: (context, params) => ReservationCopyWidget(
+            wsRef: params.getParam(
+              'wsRef',
+              ParamType.DocumentReference,
+              isList: false,
+              collectionNamePath: ['Workshops'],
+            ),
+          ),
+        ),
+        FFRoute(
+          name: 'UserAccountViewCopy',
+          path: '/userAccountViewCopy',
+          builder: (context, params) => NavBarPage(
+            initialPage: '',
+            page: UserAccountViewCopyWidget(
+              firstName: params.getParam(
+                'firstName',
+                ParamType.String,
+              ),
+              workshopID: params.getParam(
+                'workshopID',
+                ParamType.DocumentReference,
+                isList: false,
+                collectionNamePath: ['Workshops'],
+              ),
+            ),
+          ),
+        ),
+        FFRoute(
+          name: 'DeleteorEditReservationCopy',
+          path: '/deleteorEditReservationCopy',
+          builder: (context, params) => DeleteorEditReservationCopyWidget(
+            reservationRef: params.getParam(
+              'reservationRef',
+              ParamType.DocumentReference,
+              isList: false,
+              collectionNamePath: ['Reservations'],
+            ),
+          ),
         )
       ].map((r) => r.toRoute(appStateNotifier)).toList(),
     );
@@ -279,7 +337,7 @@ class FFParameters {
   // present is the special extra parameter reserved for the transition info.
   bool get isEmpty =>
       state.allParams.isEmpty ||
-      (state.extraMap.length == 1 &&
+      (state.allParams.length == 1 &&
           state.extraMap.containsKey(kTransitionInfoKey));
   bool isAsyncParam(MapEntry<String, dynamic> param) =>
       asyncParams.containsKey(param.key) && param.value is String;
@@ -300,10 +358,10 @@ class FFParameters {
 
   dynamic getParam<T>(
     String paramName,
-    ParamType type, [
+    ParamType type, {
     bool isList = false,
     List<String>? collectionNamePath,
-  ]) {
+  }) {
     if (futureParamValues.containsKey(paramName)) {
       return futureParamValues[paramName];
     }

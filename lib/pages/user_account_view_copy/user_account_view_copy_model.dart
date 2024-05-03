@@ -1,10 +1,11 @@
 import '/backend/backend.dart';
 import '/flutter_flow/flutter_flow_util.dart';
-import 'user_account_view_widget.dart' show UserAccountViewWidget;
+import 'user_account_view_copy_widget.dart' show UserAccountViewCopyWidget;
 import 'package:flutter/material.dart';
 import 'package:infinite_scroll_pagination/infinite_scroll_pagination.dart';
 
-class UserAccountViewModel extends FlutterFlowModel<UserAccountViewWidget> {
+class UserAccountViewCopyModel
+    extends FlutterFlowModel<UserAccountViewCopyWidget> {
   ///  State fields for stateful widgets in this page.
 
   // State field(s) for PageView widget.
@@ -63,7 +64,6 @@ class UserAccountViewModel extends FlutterFlowModel<UserAccountViewWidget> {
     return controller
       ..addPageRequestListener(
         (nextPageMarker) => queryReservationsRecordPage(
-          queryBuilder: (_) => listViewPagingQuery2 ??= query,
           nextPageMarker: nextPageMarker,
           streamSubscriptions: listViewStreamSubscriptions2,
           controller: controller,

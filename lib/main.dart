@@ -18,8 +18,6 @@ void main() async {
   usePathUrlStrategy();
   await initFirebase();
 
-  await FlutterFlowTheme.initialize();
-
   final appState = FFAppState(); // Initialize FFAppState
   await appState.initializePersistedState();
 
@@ -41,7 +39,7 @@ class MyApp extends StatefulWidget {
 }
 
 class _MyAppState extends State<MyApp> {
-  ThemeMode _themeMode = FlutterFlowTheme.themeMode;
+  ThemeMode _themeMode = ThemeMode.system;
 
   late Stream<BaseAuthUser> userStream;
 
@@ -74,7 +72,6 @@ class _MyAppState extends State<MyApp> {
 
   void setThemeMode(ThemeMode mode) => setState(() {
         _themeMode = mode;
-        FlutterFlowTheme.saveThemeMode(mode);
       });
 
   @override
@@ -89,10 +86,6 @@ class _MyAppState extends State<MyApp> {
       supportedLocales: const [Locale('en', '')],
       theme: ThemeData(
         brightness: Brightness.light,
-        useMaterial3: false,
-      ),
-      darkTheme: ThemeData(
-        brightness: Brightness.dark,
         useMaterial3: false,
       ),
       themeMode: _themeMode,
@@ -127,8 +120,8 @@ class _NavBarPageState extends State<NavBarPage> {
   Widget build(BuildContext context) {
     final tabs = {
       'Homepage': const HomepageWidget(),
-      'Calendar': const CalendarWidget(),
       'CommunityHub': const CommunityHubWidget(),
+      'Calendar': const CalendarWidget(),
       'UserAccountView': const UserAccountViewWidget(),
     };
     final currentIndex = tabs.keys.toList().indexOf(_currentPageName);
@@ -188,16 +181,14 @@ class _NavBarPageState extends State<NavBarPage> {
               mainAxisAlignment: MainAxisAlignment.center,
               children: [
                 Icon(
-                  currentIndex == 1
-                      ? Icons.date_range_rounded
-                      : Icons.date_range_outlined,
+                  Icons.comment_sharp,
                   color: currentIndex == 1
                       ? FlutterFlowTheme.of(context).primaryText
                       : FlutterFlowTheme.of(context).secondaryBackground,
-                  size: currentIndex == 1 ? 24.0 : 24.0,
+                  size: 24.0,
                 ),
                 Text(
-                  'calendar',
+                  'community',
                   overflow: TextOverflow.ellipsis,
                   style: TextStyle(
                     color: currentIndex == 1
@@ -214,14 +205,16 @@ class _NavBarPageState extends State<NavBarPage> {
               mainAxisAlignment: MainAxisAlignment.center,
               children: [
                 Icon(
-                  Icons.comment_sharp,
+                  currentIndex == 2
+                      ? Icons.date_range_rounded
+                      : Icons.date_range_outlined,
                   color: currentIndex == 2
                       ? FlutterFlowTheme.of(context).primaryText
                       : FlutterFlowTheme.of(context).secondaryBackground,
-                  size: 24.0,
+                  size: currentIndex == 2 ? 24.0 : 24.0,
                 ),
                 Text(
-                  'community',
+                  'calendar',
                   overflow: TextOverflow.ellipsis,
                   style: TextStyle(
                     color: currentIndex == 2

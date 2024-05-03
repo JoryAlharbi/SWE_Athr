@@ -40,12 +40,24 @@ class ReservationsRecord extends FirestoreRecord {
   String get time => _time ?? '';
   bool hasTime() => _time != null;
 
+  // "workshopName" field.
+  String? _workshopName;
+  String get workshopName => _workshopName ?? '';
+  bool hasWorkshopName() => _workshopName != null;
+
+  // "nDate" field.
+  DateTime? _nDate;
+  DateTime? get nDate => _nDate;
+  bool hasNDate() => _nDate != null;
+
   void _initializeFields() {
     _date = snapshotData['Date'] as String?;
     _reservationID = snapshotData['reservationID'] as String?;
     _userID = snapshotData['userID'] as DocumentReference?;
     _workshopID = snapshotData['workshopID'] as DocumentReference?;
     _time = snapshotData['time'] as String?;
+    _workshopName = snapshotData['workshopName'] as String?;
+    _nDate = snapshotData['nDate'] as DateTime?;
   }
 
   static CollectionReference get collection =>
@@ -88,6 +100,8 @@ Map<String, dynamic> createReservationsRecordData({
   DocumentReference? userID,
   DocumentReference? workshopID,
   String? time,
+  String? workshopName,
+  DateTime? nDate,
 }) {
   final firestoreData = mapToFirestore(
     <String, dynamic>{
@@ -96,6 +110,8 @@ Map<String, dynamic> createReservationsRecordData({
       'userID': userID,
       'workshopID': workshopID,
       'time': time,
+      'workshopName': workshopName,
+      'nDate': nDate,
     }.withoutNulls,
   );
 
@@ -112,12 +128,21 @@ class ReservationsRecordDocumentEquality
         e1?.reservationID == e2?.reservationID &&
         e1?.userID == e2?.userID &&
         e1?.workshopID == e2?.workshopID &&
-        e1?.time == e2?.time;
+        e1?.time == e2?.time &&
+        e1?.workshopName == e2?.workshopName &&
+        e1?.nDate == e2?.nDate;
   }
 
   @override
-  int hash(ReservationsRecord? e) => const ListEquality()
-      .hash([e?.date, e?.reservationID, e?.userID, e?.workshopID, e?.time]);
+  int hash(ReservationsRecord? e) => const ListEquality().hash([
+        e?.date,
+        e?.reservationID,
+        e?.userID,
+        e?.workshopID,
+        e?.time,
+        e?.workshopName,
+        e?.nDate
+      ]);
 
   @override
   bool isValidKey(Object? o) => o is ReservationsRecord;

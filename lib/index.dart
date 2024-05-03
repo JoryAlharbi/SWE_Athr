@@ -13,3 +13,10 @@ export '/pages/deleteor_edit_reservation/deleteor_edit_reservation_widget.dart'
 export '/pages/community_hub_post/community_hub_post_widget.dart'
     show CommunityHubPostWidget;
 export '/pages/searchpage/searchpage_widget.dart' show SearchpageWidget;
+export '/pages/homepage_copy/homepage_copy_widget.dart' show HomepageCopyWidget;
+export '/pages/reservation_copy/reservation_copy_widget.dart'
+    show ReservationCopyWidget;
+export '/pages/user_account_view_copy/user_account_view_copy_widget.dart'
+    show UserAccountViewCopyWidget;
+export '/pages/deleteor_edit_reservation_copy/deleteor_edit_reservation_copy_widget.dart'
+    show DeleteorEditReservationCopyWidget;
